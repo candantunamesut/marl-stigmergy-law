@@ -1,0 +1,79 @@
+[
+  {
+    "episode": 1,
+    "avg_reward": -91.95,
+    "avg_survival_steps": 58.0,
+    "avg_food_found": 1.0,
+    "avg_map_writes": 40.0
+  },
+  {
+    "episode": 50,
+    "avg_reward": -98.65299999999999,
+    "avg_survival_steps": 36.12,
+    "avg_food_found": 0.4,
+    "avg_map_writes": 20.52
+  },
+  {
+    "episode": 100,
+    "avg_reward": -98.54450000000001,
+    "avg_survival_steps": 35.9,
+    "avg_food_found": 0.4,
+    "avg_map_writes": 14.96
+  },
+  {
+    "episode": 150,
+    "avg_reward": -96.76350000000001,
+    "avg_survival_steps": 35.52,
+    "avg_food_found": 0.54,
+    "avg_map_writes": 17.08
+  },
+  {
+    "episode": 200,
+    "avg_reward": -93.14625000000002,
+    "avg_survival_steps": 39.14,
+    "avg_food_found": 0.84,
+    "avg_map_writes": 14.78
+  },
+  {
+    "episode": 250,
+    "avg_reward": -95.11824999999999,
+    "avg_survival_steps": 38.84,
+    "avg_food_found": 0.68,
+    "avg_map_writes": 15.0
+  },
+  {
+    "episode": 300,
+    "avg_reward": -92.99375,
+    "avg_survival_steps": 39.38,
+    "avg_food_found": 0.86,
+    "avg_map_writes": 15.9
+  },
+  {
+    "episode": 350,
+    "avg_reward": -94.20700000000001,
+    "avg_survival_steps": 36.9,
+    "avg_food_found": 0.76,
+    "avg_map_writes": 17.34
+  },
+  {
+    "episode": 400,
+    "avg_reward": -94.31800000000001,
+    "avg_survival_steps": 38.6,
+    "avg_food_found": 0.76,
+    "avg_map_writes": 18.06
+  },
+  {
+    "episode": 450,
+    "avg_reward": -95.126,
+    "avg_survival_steps": 36.56,
+    "avg_food_found": 0.68,
+    "avg_map_writes": 12.6
+  },
+  {
+    "episode": 500,
+    "avg_reward": -93.06524999999999,
+    "avg_survival_steps": 36.42,
+    "avg_food_found": 0.84,
+    "avg_map_writes": 11.82
+  }
+]

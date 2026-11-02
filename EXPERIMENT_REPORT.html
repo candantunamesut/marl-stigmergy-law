@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARL Hayatta Kalma, Kaynak Paylaşımı ve Stigmergy Deney Raporu</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--card-border);
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: #60a5fa;
+        }
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.75rem;
+            background: #1e3a8a;
+            color: #93c5fd;
+        }
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+        .card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #38bdf8;
+            border-left: 4px solid var(--primary);
+            padding-left: 0.75rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-box {
+            background: #0f172a;
+            border: 1px solid var(--card-border);
+            padding: 1.25rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 0.25rem;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 0.85rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--card-border);
+        }
+        th {
+            background-color: #0f172a;
+            color: #93c5fd;
+            font-weight: 600;
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        .highlight-green { color: #4ade80; font-weight: 600; }
+        .highlight-red { color: #f87171; font-weight: 600; }
+        .highlight-blue { color: #60a5fa; font-weight: 600; }
+        .code-block {
+            background: #090d16;
+            border: 1px solid #1e293b;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            overflow-x: auto;
+            line-height: 1.4;
+            margin-top: 0.75rem;
+        }
+        .q-block {
+            margin-bottom: 1.25rem;
+            padding: 1rem;
+            background: #090d16;
+            border-left: 4px solid #60a5fa;
+            border-radius: 0 8px 8px 0;
+        }
+        .q-title {
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--card-border);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>MARL Hayatta Kalma ve Stigmergy Deney Raporu</h1>
+            <p class="subtitle">Çok Etmenli Pekiştirmeli Öğrenme (Multi-Agent RL) Simülasyonu ve Davranış Analizi</p>
+            <span class="badge">Model: Parameter-Shared Actor-Critic (PPO) | Ortam: 20x20 Gridworld</span>
+        </header>
+
+        <!-- KPI Summary -->
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-value">4.5x</div>
+                <div class="stat-label">Yiyecek Bulma Artışı</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value highlight-green">+10.28</div>
+                <div class="stat-label">Ödül Puanı İyileşmesi</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value highlight-blue">39.4 Adım</div>
+                <div class="stat-label">Ort. Hayatta Kalma (Zirve: 58)</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value highlight-red">%60</div>
+                <div class="stat-label">Gereksiz Harita Cezası Azalması</div>
+            </div>
+        </div>
+
+        <!-- Section 1 -->
+        <div class="card">
+            <h2>1. Karşılaştırmalı Deney Tablosu (Baseline vs. Eğitilmiş Model)</h2>
+            <p style="color: var(--text-muted); margin-bottom: 0.75rem;">
+                Ajanlara hiçbir kural verilmemiştir. Başlangıçtaki kör rastgele taban çizgisi ile 500 epizotluk PPO eğitimi sonrası sonuçlar:
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metrik</th>
+                        <th>Rastgele Baseline (Eğitimsiz)</th>
+                        <th>Eğitilmiş PPO Modeli (500 Epizot)</th>
+                        <th>Değişim ve Çıkarım</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ortalama Kümülatif Ödül</strong></td>
+                        <td>-103.35</td>
+                        <td class="highlight-green">-93.07 (Zirve: -91.95)</td>
+                        <td>Ajanlar açlıktan ölme oranını önemli ölçüde düşürdü.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Epizot Başı Yiyecek Tüketimi</strong></td>
+                        <td>0.18 adet</td>
+                        <td class="highlight-green">0.84 adet (Zirve: 1.00)</td>
+                        <td>3x3 alanındaki yiyeceğe yönelme stratejisi öğrenildi.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hayatta Kalma Süresi</strong></td>
+                        <td>30.0 adım (Sabit Açlık)</td>
+                        <td class="highlight-blue">36.4 - 39.4 adım (Maks: 58)</td>
+                        <td>Ajanların ömrü yenilenen canla %31 uzadı.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Harita Yazma Eylemi (WRITE_TO_MAP)</strong></td>
+                        <td>27 - 40 eylem (Rastgele Spam)</td>
+                        <td class="highlight-blue">11.8 eylem (Seçici)</td>
+                        <td>Adım başı -0.05 ceza getiren spam eylem terk edildi.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="card">
+            <h2>2. Bilimsel ve Davranışsal Analiz</h2>
+
+            <div class="q-block">
+                <div class="q-title">Soru 1: Ajanlar dışarıdan bir şey öğretilmeden kendi kendilerine mi öğrendi?</div>
+                <p>
+                    <strong>EVET.</strong> Eklenen yapay sinir ağı (Actor-Critic) ajanlara hazır bir taktik veya kural vermez; bomboş bir beyindir. Ajanlar ilk adımlarda rastgele yürüyüp duvara çarpmış ve açlıktan ölmüştür (-100 ceza). Her adımda aldıkları ödül/ceza geri bildirimleriyle sinir ağının katsayıları geriye yayılım (PPO gradient update) ile kendi kendine ayarlanmıştır.
+                </p>
+            </div>
+
+            <div class="q-block">
+                <div class="q-title">Soru 2: Kaynak paylaşımı ve iş bölümü sağlandı mı?</div>
+                <p>
+                    <strong>HAYIR, bencilce rekabet (Tragedy of the Commons) oluştu.</strong><br>
+                    Yiyeceği ilk gören ve yaklaşan ajan tek başına yemiştir. Çünkü yiyeceği yemeyen ajan 30 adımda ölmekte (-100 ceza) ve yiyen ajan +50 kazanmaktadır. Bireysel hayatta kalma güdüsü ortamın kuralları gereği bencilliği maksimize etmiştir. Kimse "ben yemeyeyim arkadaşım yesin" dememiştir çünkü karşılığında ölüm cezası almaktadır.
+                </p>
+            </div>
+
+            <div class="q-block">
+                <div class="q-title">Soru 3: STIGMERGY ile rotalar bulunabildi mi?</div>
+                <p>
+                    <strong>Kısmen iz bırakıldı, ancak kesintisiz bir otoban rotası oluşamadı.</strong><br>
+                    Ajanlar haritaya yazmayı öğrendi ancak mevcut kuralda harita izi sadece basılan tek bir hücrede (1x1) kalmaktadır ve koku komşu hücrelere yayılmamaktadır (difüzyon yok). Diğer ajanın bu izi görebilmesi için tam o noktanın üstüne basması gerektiğinden, karıncalardaki gibi kesintisiz bir feromon hattı takip edilemedi.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="card">
+            <h2>3. Simülasyon Çıktısı Örneği (Episode 2 Adım Adım İnceleme)</h2>
+            <p style="color: var(--text-muted); margin-bottom: 0.5rem;">
+                Eğitilmiş modelin <code>detailed_behavior_logs.txt</code> dosyasından alınan gerçek adım adım simülasyon kesiti:
+            </p>
+            <div class="code-block">
+--- [Episode 2 | Adim 08] --------------------------------------------------
+  [agent_3] Konum: ( 3,11) -> ( 2,11) | Eylem: MOVE_LEFT    | Can: 29 HP | Adim Odulu:  49.90
+      >>> [YIYECEK YENDI] agent_3 yiyecegi tek basina tuketti! Cani 30'a dolduruldu, +50.0 odul aldi.
+
+--- [Episode 2 | Adim 09] --------------------------------------------------
+  [agent_0] Konum: (19,18) -> (19,19) | Eylem: MOVE_DOWN    | Can: 29 HP | Adim Odulu:  49.90
+      >>> [YIYECEK YENDI] agent_0 yiyecegi tek basina tuketti! Cani 30'a dolduruldu, +50.0 odul aldi.
+
+--- [Episode 2 | Adim 18] --------------------------------------------------
+  [agent_1] Konum: (11,13) -> (12,13) | Eylem: MOVE_RIGHT   | Can: 28 HP | Adim Odulu:  49.90
+      >>> [YIYECEK YENDI] agent_1 yiyecegi tek basina tuketti! Cani 30'a dolduruldu, +50.0 odul aldi.
+
+--- [Episode 2 | Adim 30] --------------------------------------------------
+  [agent_2] Konum: (18,17) -> (18,17) | Eylem: STAY        | Can:  0 HP | Adim Odulu: -100.10
+      !!! [OLUM] agent_2 acliktan oldu! Gruptan elendi (-100.0 ceza).
+            </div>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="card">
+            <h2>4. Paylaşım ve Gerçek İş Bölümü İçin Çözüm Önerisi</h2>
+            <p>
+                Ajanların yiyecekleri aç olan takım arkadaşlarıyla paylaşması ve karınca kolonisi gibi iş bölümü (Gözcü / Toplayıcı) yapması için:
+            </p>
+            <ul style="margin-left: 1.5rem; margin-top: 0.5rem; color: #cbd5e1;">
+                <li><strong>Takım Ödülü (Shared Reward):</strong> Yiyecek yendiğinde ödülün bir kısmı diğer canlı ajanlara da dağıtılmalı; herhangi biri ölürse tüm takım ceza almalıdır.</li>
+                <li><strong>Feromon Difüzyonu:</strong> Haritaya yazılan sinyal komşu 8 hücreye gradyan (0.5, 0.25) şeklinde yayılmalı ve ajanlar 3x3 harita görüşü ile bu kokuyu takip edebilmelidir.</li>
+            </ul>
+        </div>
+
+        <footer>
+            Proje: Custom MARL Environment & Exploration Setup | Dosyalar: env.py, model.py, train.py, detailed_behavior_logs.txt
+        </footer>
+    </div>
+</body>
+</html>
