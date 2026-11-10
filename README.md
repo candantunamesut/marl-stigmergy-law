@@ -1,58 +1,80 @@
-# Multi-Agent Stigmergy & Institutional Memory Simulation
-Externalized Memory and Institutional Rule Systems in Multi-Agent Societies  
+# Multi-Agent Collective Survival & Resource Sharing Simulation
+**Kollektif Hayatta Kalma, Kaynak Paylaşımı ve Çok Ajanlı Pekiştime/Evrimsel Simülasyon Sistemi**
+
+## Proje Özeti
+Bu proje, kaynak kıtlığı bulunan bir ızgara dünyasında (20x20 Grid) bağımsız ajanların hayatta kalma, kaynak toplama ve takım içi işbirliği dinamiklerini inceleyen bir Çok Ajanlı Pekiştirmeli Öğrenme (MARL) ve Nöroevrim (Neuroevolution / GA) simülasyonudur.
 
 ---
 
-## Executive Summary
-This repository contains a computational Multi-Agent Reinforcement Learning (MARL) and Evolutionary Simulation framework investigating how agents develop, utilize, and adapt to **externalized shared memory (stigmergic pheromone maps)** in resource-scarce environments.
+## Yapılan Güncellemeler ve Yeni Kurallar
 
-The project models the **Tragedy of the Commons** dilemma where agents harvest scarce, slowly replenishing food hotspots while managing their metabolic decay.
+1. **Başlangıç ve Maksimum Can (60 HP):**
+   - Ajanlar oyuna `60.0 HP` sağlıkla başlar (`MAX_HEALTH = 60.0`).
+   - Sağlık oranı gözlem vektörüne `[0, 1]` aralığında normalleştirilerek verilir.
+
+2. **Yemek Bulma ve Ödül Sistemi (+60 HP & +60 Ödül, %10 Takım Payı):**
+   - Bir ajan yiyecek hücresine ulaştığında **+60.0 HP** can kazanır (maksimum 60 ile sınırlandırılır).
+   - Yemeği bulan ajan **+60.0 puan** ödül kazanır (`FOOD_FOUND = 60.0`).
+   - Takım paylaşımı kuralı uyarınca, **hayatta olan diğer tüm takım arkadaşları yemeğin %10'u kadar (+6.0 puan) ödül kazanır**.
+
+3. **Harita Sisteminin Kaldırılması (Sadeleştirilmiş Hareket Uzayı):**
+   - Karışıklığa ve can kaybına yol açan paylaşımlı harita (shared map), haritayı açma (`READ_MAP`) ve haritaya işaretleme (`WRITE_TO_MAP`) eylemleri tamamen kaldırıldı.
+   - Ajanların aksiyon uzayı 5 temel harekete indirgendi:
+     - `0: MOVE_UP` (Yukarı)
+     - `1: MOVE_DOWN` (Aşağı)
+     - `2: MOVE_LEFT` (Sola)
+     - `3: MOVE_RIGHT` (Sağa)
+     - `4: STAY` (Olduğu yerde bekle)
+   - Gözlem uzayı harita skaları çıkarılarak **21 boyuta** güncellendi (`[0:2]` koordinatlar, `[2]` can oranı, `[3:12]` çevredeki ajanlar 3x3, `[12:21]` çevredeki yiyecekler 3x3).
+
+4. **Metabolik Can Kaybı (0.2 HP / Adım):**
+   - Adım başına sağlık kaybı `0.2 HP` olarak ayarlandı. Ajanlar aç kalmadan ~300 adım boyunca çevreyi keşfedebilir.
+
+5. **Takım Arkadaşı Ölüm Cezası (-10 HP):**
+   - Bir ajan canı bittiğinde öldüğünde (`DEATH = -100.0` ceza puanı), **hayatta olan diğer tüm takım arkadaşları -10.0 HP can kaybeder**.
+   - Bu kural ajanların takım arkadaşlarının hayatta kalmasına dolaylı olarak bağlı olmasını sağlar.
 
 ---
 
-## Core Mechanics & Supervisor Revisions
-The environment was upgraded with:
-1. **Zero-Cost Stigmergic Marking (`MAP_ACTION_COST = 0.0` & `WRITE_HEALTH_DECAY = 0.0`):** Marking the shared map does not penalize rewards or drain agent health, allowing communication to emerge freely.
-2. **Calibrated Metabolic Decay (`HEALTH_DECAY = 0.2 HP/step`):** Allows agents up to ~150 exploration steps without food, solving the sparse-reward starvation bottleneck.
-3. **$3 \times 3$ Spatial Pheromone Sensing:** Agents observe the $3 \times 3$ local neighborhood of the shared pheromone matrix (`obs[21:30]`), enabling them to detect and follow spatial pheromone gradients.
-4. **Passive Map Perception:** Reading the shared map is part of the 30-dimensional observation vector, eliminating wasted turns.
-5. **Dual Paradigm Comparison:** Implements both **PPO (Proximal Policy Optimization)** and **Neuroevolution (Genetic Algorithm)**.
+## Dosya Yapısı
+
+- `config.py`: Ortam hiperparametreleri (can limitleri, ödül katsayıları, ceza değerleri).
+- `env.py`: PettingZoo `ParallelEnv` standardına uygun 20x20 çok ajanlı çevre motoru.
+- `model.py`: 21-boyutlu gözlem ve 5-aksiyonlu PyTorch Actor-Critic sinir ağı (Nöroevrim için düz ağırlık arayüzü içerir).
+- `train.py`: Çok Ajanlı PPO (Proximal Policy Optimization) eğitim boru hattı.
+- `train_evolution.py`: Genetik Algoritma (GA / Neuroevolution) ile popülasyon bazlı politika optimizasyonu.
+- `compare_algorithms.py`: Random Baseline, PPO ve Nöroevrim politikalarını özdeş test seed'leri üzerinde karşılaştıran benchmark aracı.
+- `visualize.py`: Simülasyonu terminalde canlı ızgara olarak adım adım gösterir ve tarayıcıda izlenebilir zengin bir etkileşimli HTML oynatıcısı (`simulation_playback.html`) üretir.
+- `simulation_playback.html`: Adım adım kaydırıcı, oynat/durdur butonları, hız seçenekleri, renkli can barları ve olay kayıtları içeren HTML arayüzü.
+- `test_env.py`: Tüm yeni kuralların doğruluğunu test eden birim testi.
+- `record_detailed_episodes.py`: Ajanların episode bazında tüm hareket ve olaylarını metin ve JSON olarak kaydeder.
 
 ---
 
-## 📁 File Structure
-- `config.py`: Environment configurations, reward weights, and metabolic rates.
-- `env.py`: PettingZoo-compatible $20 \times 20$ grid world with dynamic pheromone dissipation.
-- `model.py`: PyTorch Actor-Critic architecture with flat-weight interfaces for evolutionary optimization.
-- `train.py`: Deep Reinforcement Learning pipeline using Multi-Agent PPO.
-- `train_evolution.py`: Population-based Genetic Algorithm optimizing episodic cumulative fitness.
-- `compare_algorithms.py`: Rigorous evaluation benchmark comparing Random Baseline, PPO, and Neuroevolution.
-- `visualize.py`: Step-by-step terminal visualizer displaying agents, food, and pheromone intensities.
+## Çalıştırma Komutları
 
----
-
-## Running and Evaluation
-
-### 1. PPO Training
+### 1. Ortam Kurallarını Test Etme
 ```bash
-python3 train.py
+py test_env.py
 ```
-*Trains homogeneous PPO agents, logging survival steps, food consumption, map writes and rewards.*
 
-### 2. Neuroevolution (Genetic Algorithm)
+### 2. PPO Modeli Eğitimi
 ```bash
-python3 train_evolution.py
+py train.py
 ```
-*Optimizes policy weights on total episodic lifespan and food collection across generations.*
 
-### 3. Run Side-by-Side Algorithm Comparison
+### 3. Nöroevrim (Genetik Algoritma) Eğitimi
 ```bash
-python3 compare_algorithms.py
+py train_evolution.py
 ```
-*Evaluates trained checkpoints on identical test seeds and prints a comparative statistical table.*
 
-### 4.Visual Simulation
+### 4. Algoritma Karşılaştırma Benchmark'ı
 ```bash
-python3 visualize.py --steps 80
+py compare_algorithms.py
 ```
-*Displays the $20 \times 20$ grid live, showing agent movements (`0-3`), food hotspots (`F`), and pheromone strength (`*`, `~`). -> here we might need to create an html visualisation etc. Hard to see all the steps when printed one by one vertically as text.*
+
+### 5. Görsel Simülasyon ve HTML Oynatıcı Oluşturma
+```bash
+py visualize.py --steps 80
+```
+Bu komut terminalde simülasyonu çalıştırır ve doğrudan tarayıcınızda açabileceğiniz `simulation_playback.html` dosyasını oluşturur.

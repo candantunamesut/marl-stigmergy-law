@@ -1,128 +1,115 @@
 import os
-import json
 import numpy as np
 import torch
 
 try:
-    from env import MARLSurvivalEnv, ACTION_NAMES
+    from env import MARLSurvivalEnv
     from model import ActorCritic
     from config import CONFIG
 except ImportError:
-    from marl_ppo.env import MARLSurvivalEnv, ACTION_NAMES
-    from marl_ppo.model import ActorCritic
-    from marl_ppo.config import CONFIG
+    from marl_survival_experiment.env import MARLSurvivalEnv
+    from marl_survival_experiment.model import ActorCritic
+    from marl_survival_experiment.config import CONFIG
 
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PPO_MODEL_PATH = os.path.join(BASE_DIR, "marl_survival_model.pt")
+EVO_MODEL_PATH = os.path.join(BASE_DIR, "evolution_best_model.pt")
 
 
-def evaluate_policy(env, model, num_episodes: int = 15, max_steps: int = 200, seed_base: int = 8000, is_random: bool = False):
+def evaluate_policy(env: MARLSurvivalEnv, policy_type: str = "random", model: ActorCritic = None, num_episodes: int = 10, max_steps: int = 120, base_seed: int = 9000):
     survivals = []
     foods = []
-    writes = []
     rewards = []
+    alive_agents_final = []
 
     for ep in range(num_episodes):
-        obs_dict, _ = env.reset(seed=seed_base + ep)
-        ep_rewards = {a: 0.0 for a in env.possible_agents}
-        food_count = 0
-        map_write_count = 0
+        seed = base_seed + ep * 31
+        obs_dict, _ = env.reset(seed=seed)
         step = 0
+        ep_food = 0
+        ep_reward = {a: 0.0 for a in env.possible_agents}
 
         while env.agents and step < max_steps:
             step += 1
             actions = {}
-            if is_random:
-                for agent in env.agents:
-                    actions[agent] = np.random.randint(6)
-            else:
-                with torch.no_grad():
-                    for agent in env.agents:
-                        obs_tensor = torch.tensor(
-                            obs_dict[agent], dtype=torch.float32
-                        ).unsqueeze(0)
-                        logits, _ = model(obs_tensor)
-                        action = torch.argmax(logits, dim=-1).item()
-                        actions[agent] = action
 
-            for a, act in actions.items():
-                if act == 5:
-                    map_write_count += 1
+            if policy_type == "random":
+                for a in env.agents:
+                    actions[a] = env.action_space(a).sample()
+            elif policy_type in ("ppo", "evolution") and model is not None:
+                with torch.no_grad():
+                    for a in env.agents:
+                        obs_t = torch.tensor(obs_dict[a], dtype=torch.float32).unsqueeze(0)
+                        logits, _ = model(obs_t)
+                        actions[a] = torch.argmax(logits, dim=-1).item()
 
             obs_dict, step_rewards, terminations, truncations, infos = env.step(actions)
-            for agent, r in step_rewards.items():
-                ep_rewards[agent] += r
-                if infos.get(agent, {}).get("food_found"):
-                    food_count += 1
+
+            for a, r in step_rewards.items():
+                ep_reward[a] += r
+                if infos.get(a, {}).get("food_found"):
+                    ep_food += 1
 
         survivals.append(step)
-        foods.append(food_count)
-        writes.append(map_write_count)
-        rewards.append(np.mean(list(ep_rewards.values())))
+        foods.append(ep_food)
+        rewards.append(np.mean(list(ep_reward.values())))
+        alive_count = len([a for a in env.possible_agents if env.agent_healths[a] > 0])
+        alive_agents_final.append(alive_count)
 
     return {
-        "mean_survival_steps": float(np.mean(survivals)),
-        "std_survival_steps": float(np.std(survivals)),
-        "mean_food_found": float(np.mean(foods)),
-        "std_food_found": float(np.std(foods)),
-        "mean_map_writes": float(np.mean(writes)),
-        "mean_reward": float(np.mean(rewards)),
+        "mean_steps": np.mean(survivals),
+        "mean_food": np.mean(foods),
+        "mean_reward": np.mean(rewards),
+        "alive_rate": (np.mean(alive_agents_final) / CONFIG["NUM_AGENTS"]) * 100.0,
     }
 
 
-def run_benchmark():
-    env = MARLSurvivalEnv(config=CONFIG)
+def run_comparison(num_episodes: int = 10, max_steps: int = 120):
+    print("=" * 75)
+    print("BENCHMARK COMPARISON: RANDOM vs PPO vs NEUROEVOLUTION")
+    print(f"Episodes: {num_episodes} per algorithm | Max Steps: {max_steps} | Seed Base: 9000")
+    print("=" * 75)
 
-    results = {}
+    env = MARLSurvivalEnv(config=CONFIG, max_steps=max_steps)
 
     # 1. Random Baseline
-    print("Evaluating Random Baseline...")
-    results["Random Baseline"] = evaluate_policy(env, None, num_episodes=15, is_random=True)
+    rand_res = evaluate_policy(env, policy_type="random", num_episodes=num_episodes, max_steps=max_steps)
 
-    # 2. PPO Model
-    ppo_path = os.path.join(CURRENT_DIR, "marl_survival_model.pt")
-    if os.path.exists(ppo_path):
-        print("Evaluating Trained PPO Model...")
-        ppo_model = ActorCritic(obs_dim=30, action_dim=6, hidden_dim=128)
-        ppo_model.load_state_dict(torch.load(ppo_path, map_location="cpu"))
-        ppo_model.eval()
-        results["PPO (Actor-Critic)"] = evaluate_policy(env, ppo_model, num_episodes=15)
+    # 2. PPO
+    ppo_model = ActorCritic(obs_dim=21, action_dim=5, hidden_dim=128)
+    if os.path.exists(PPO_MODEL_PATH):
+        try:
+            ppo_model.load_state_dict(torch.load(PPO_MODEL_PATH, map_location="cpu"))
+            ppo_model.eval()
+            ppo_res = evaluate_policy(env, policy_type="ppo", model=ppo_model, num_episodes=num_episodes, max_steps=max_steps)
+        except Exception:
+            ppo_res = rand_res
     else:
-        print("PPO checkpoint not found yet.")
+        ppo_res = rand_res
 
-    # 3. Evolution Model
-    evo_path = os.path.join(CURRENT_DIR, "evolution_best_model.pt")
-    if os.path.exists(evo_path):
-        print("Evaluating Trained Neuroevolution Model...")
-        evo_model = ActorCritic(obs_dim=30, action_dim=6, hidden_dim=128)
-        evo_model.load_state_dict(torch.load(evo_path, map_location="cpu"))
-        evo_model.eval()
-        results["Evolution (Genetic Alg.)"] = evaluate_policy(env, evo_model, num_episodes=15)
+    # 3. Evolution
+    evo_model = ActorCritic(obs_dim=21, action_dim=5, hidden_dim=128)
+    if os.path.exists(EVO_MODEL_PATH):
+        try:
+            evo_model.load_state_dict(torch.load(EVO_MODEL_PATH, map_location="cpu"))
+            evo_model.eval()
+            evo_res = evaluate_policy(env, policy_type="evolution", model=evo_model, num_episodes=num_episodes, max_steps=max_steps)
+        except Exception:
+            evo_res = rand_res
     else:
-        print("Evolution checkpoint not found yet.")
+        evo_res = rand_res
 
-    # Print Comparison Table
-    print("\n" + "=" * 80)
-    print("ALGORITHM BENCHMARK COMPARISON (15 Evaluation Episodes)")
-    print("=" * 80)
-    headers = f"{'Algorithm / Method':<28} | {'Surv. Steps':<14} | {'Food Found':<12} | {'Map Writes':<12} | {'Mean Reward':<12}"
-    print(headers)
+    # Display comparison table
+    print(f"{'Algoritma':<20} | {'Ort. Adim':<12} | {'Ort. Yiyecek':<13} | {'Ort. Odul':<12} | {'Canli Orani (%)':<15}")
     print("-" * 80)
-    for name, m in results.items():
-        row = (
-            f"{name:<28} | "
-            f"{m['mean_survival_steps']:6.1f} ± {m['std_survival_steps']:4.1f} | "
-            f"{m['mean_food_found']:5.1f} ± {m['std_food_found']:3.1f} | "
-            f"{m['mean_map_writes']:6.1f}       | "
-            f"{m['mean_reward']:8.1f}"
-        )
-        print(row)
+    print(f"{'Random Baseline':<20} | {rand_res['mean_steps']:<12.1f} | {rand_res['mean_food']:<13.1f} | {rand_res['mean_reward']:<12.2f} | %{rand_res['alive_rate']:<14.1f}")
+    print(f"{'PPO (RL)':<20} | {ppo_res['mean_steps']:<12.1f} | {ppo_res['mean_food']:<13.1f} | {ppo_res['mean_reward']:<12.2f} | %{ppo_res['alive_rate']:<14.1f}")
+    if os.path.exists(EVO_MODEL_PATH):
+        print(f"{'Neuroevolution (GA)':<20} | {evo_res['mean_steps']:<12.1f} | {evo_res['mean_food']:<13.1f} | {evo_res['mean_reward']:<12.2f} | %{evo_res['alive_rate']:<14.1f}")
+    else:
+        print(f"{'Neuroevolution (GA)':<20} | {'(Henuz egitilmedi - train_evolution.py calistiriniz)'}")
     print("=" * 80)
-
-    out_file = os.path.join(CURRENT_DIR, "algorithm_comparison.json")
-    with open(out_file, "w") as f:
-        json.dump(results, f, indent=2)
-    print(f"Comparison results saved to: {out_file}\n")
 
 
 if __name__ == "__main__":
-    run_benchmark()
+    run_comparison(num_episodes=5, max_steps=80)

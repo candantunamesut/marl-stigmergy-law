@@ -11,16 +11,19 @@ try:
     from model import ActorCritic
     from config import CONFIG
 except ImportError:
-    from marl_ppo.env import MARLSurvivalEnv, ACTION_NAMES
-    from marl_ppo.model import ActorCritic
-    from marl_ppo.config import CONFIG
+    from marl_survival_experiment.env import MARLSurvivalEnv, ACTION_NAMES
+    from marl_survival_experiment.model import ActorCritic
+    from marl_survival_experiment.config import CONFIG
 
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "marl_survival_model.pt")
+DEFAULT_HISTORY_PATH = os.path.join(BASE_DIR, "training_history.json")
+DEFAULT_EVAL_PATH = os.path.join(BASE_DIR, "eval_results.json")
 
 
 class PPOTrainer:
     """
-    Multi-Agent PPO Trainer for MARL Survival & Stigmergy Emergence.
+    Multi-Agent PPO Trainer for MARL Survival & Collective Cooperation.
     Uses shared actor-critic parameters across homogeneous agents.
     """
     def __init__(
@@ -34,19 +37,10 @@ class PPOTrainer:
         final_ent_coef: float = 0.02,
         vf_coef: float = 0.5,
         max_grad_norm: float = 0.5,
-        device: str = "auto",
+        device: str = "cpu",
     ):
         self.env = env
-        if device == "auto":
-            if torch.backends.mps.is_available():
-                self.device = torch.device("mps")
-            elif torch.cuda.is_available():
-                self.device = torch.device("cuda")
-            else:
-                self.device = torch.device("cpu")
-        else:
-            self.device = torch.device(device)
-
+        self.device = torch.device(device)
         self.gamma = gamma
         self.gae_lambda = gae_lambda
         self.clip_coef = clip_coef
@@ -56,24 +50,21 @@ class PPOTrainer:
         self.vf_coef = vf_coef
         self.max_grad_norm = max_grad_norm
 
-        self.model = ActorCritic(obs_dim=30, action_dim=6, hidden_dim=128).to(self.device)
+        self.model = ActorCritic(obs_dim=21, action_dim=5, hidden_dim=128).to(self.device)
         self.optimizer = optim.Adam(self.model.parameters(), lr=lr, eps=1e-5)
 
     def train(
         self,
         total_episodes: int = 500,
-        max_steps_per_episode: int = 200,
+        max_steps_per_episode: int = 150,
         update_frequency_steps: int = 1024,
         ppo_epochs: int = 4,
         batch_size: int = 64,
         log_interval: int = 50,
-        save_path: str = None,
+        save_path: str = DEFAULT_MODEL_PATH,
     ):
-        if save_path is None:
-            save_path = os.path.join(CURRENT_DIR, "marl_survival_model.pt")
-
         print("=" * 65)
-        print("STARTING MARL REINFORCEMENT LEARNING TRAINING (PPO + STIGMERGY)")
+        print("STARTING MARL REINFORCEMENT LEARNING TRAINING (PPO)")
         print(f"Device: {self.device} | Total Episodes: {total_episodes} | Step Cap: {max_steps_per_episode}")
         print("=" * 65)
 
@@ -90,18 +81,19 @@ class PPOTrainer:
         ep_rewards = []
         ep_lengths = []
         ep_foods = []
-        ep_map_writes = []
+        ep_shared_bonuses = []
 
         global_step = 0
 
         for episode in range(1, total_episodes + 1):
+            # Anneal entropy coefficient
             progress = episode / float(total_episodes)
             self.ent_coef = self.initial_ent_coef + progress * (self.final_ent_coef - self.initial_ent_coef)
 
             obs_dict, _ = self.env.reset(seed=1000 + episode)
             episode_reward = {a: 0.0 for a in self.env.possible_agents}
             food_found_in_ep = 0
-            map_writes_in_ep = 0
+            shared_bonus_in_ep = 0.0
             ep_step = 0
 
             while self.env.agents and ep_step < max_steps_per_episode:
@@ -120,14 +112,10 @@ class PPOTrainer:
                         ).unsqueeze(0)
                         action, logprob, _, value = self.model.get_action_and_value(obs_tensor)
 
-                        act_int = action.item()
                         step_obs[agent] = obs_dict[agent]
-                        step_actions[agent] = act_int
+                        step_actions[agent] = action.item()
                         step_logprobs[agent] = logprob.item()
                         step_values[agent] = value.item()
-
-                        if act_int == 5:  # WRITE_TO_MAP
-                            map_writes_in_ep += 1
 
                 next_obs_dict, rewards, terminations, truncations, infos = self.env.step(step_actions)
 
@@ -135,6 +123,7 @@ class PPOTrainer:
                     b_obs.append(step_obs[agent])
                     b_actions.append(step_actions[agent])
                     b_logprobs.append(step_logprobs[agent])
+                    # Scale reward for numerical stability in value function
                     scaled_r = rewards.get(agent, 0.0) * 0.1
                     b_rewards.append(scaled_r)
                     is_done = terminations.get(agent, False) or truncations.get(agent, False)
@@ -144,6 +133,8 @@ class PPOTrainer:
                     episode_reward[agent] += rewards.get(agent, 0.0)
                     if infos.get(agent, {}).get("food_found"):
                         food_found_in_ep += 1
+                    if "shared_food_reward" in infos.get(agent, {}):
+                        shared_bonus_in_ep += infos[agent]["shared_food_reward"]
 
                 obs_dict = next_obs_dict
 
@@ -158,18 +149,18 @@ class PPOTrainer:
             ep_rewards.append(mean_ep_reward)
             ep_lengths.append(ep_step)
             ep_foods.append(food_found_in_ep)
-            ep_map_writes.append(map_writes_in_ep)
+            ep_shared_bonuses.append(shared_bonus_in_ep)
 
             if episode % log_interval == 0 or episode == 1:
                 avg_r = np.mean(ep_rewards[-log_interval:])
                 avg_l = np.mean(ep_lengths[-log_interval:])
                 avg_f = np.mean(ep_foods[-log_interval:])
-                avg_m = np.mean(ep_map_writes[-log_interval:])
+                avg_s = np.mean(ep_shared_bonuses[-log_interval:])
                 elapsed = time.time() - start_time
                 print(
                     f"Ep {episode:3d}/{total_episodes} | Steps: {global_step:5d} | "
                     f"Surv. Steps: {avg_l:5.1f} | Food/Ep: {avg_f:4.1f} | "
-                    f"Map Writes: {avg_m:4.1f} | Avg Reward: {avg_r:7.2f} | Time: {elapsed:.1f}s"
+                    f"Shared Rew: {avg_s:4.1f} | Avg Reward: {avg_r:7.2f} | Time: {elapsed:.1f}s"
                 )
 
                 history.append({
@@ -177,7 +168,7 @@ class PPOTrainer:
                     "avg_reward": float(avg_r),
                     "avg_survival_steps": float(avg_l),
                     "avg_food_found": float(avg_f),
-                    "avg_map_writes": float(avg_m),
+                    "avg_shared_reward": float(avg_s),
                 })
 
         torch.save(self.model.state_dict(), save_path)
@@ -196,7 +187,7 @@ class PPOTrainer:
         done_t = np.array(b_dones, dtype=np.bool_)
         val_t = np.array(b_values, dtype=np.float32)
 
-        # Compute Generalized Advantage Estimation (GAE)
+        # Generalized Advantage Estimation (GAE)
         n = len(b_obs)
         advantages = np.zeros(n, dtype=np.float32)
         last_gae_lam = 0.0
@@ -255,22 +246,20 @@ class PPOTrainer:
                 nn.utils.clip_grad_norm_(self.model.parameters(), self.max_grad_norm)
                 self.optimizer.step()
 
-    def evaluate(self, num_episodes: int = 5, max_steps: int = 200, temperature: float = 0.5):
+    def evaluate(self, num_episodes: int = 5, max_steps: int = 150, temperature: float = 0.5):
         print("\n" + "=" * 65)
-        print(f"EVALUATING TRAINED PPO POLICY OVER {num_episodes} EPISODES (Temp={temperature})")
+        print(f"EVALUATING TRAINED RL POLICY OVER {num_episodes} EPISODES (Temp={temperature})")
         print("=" * 65)
 
         self.model.eval()
         eval_survivals = []
         eval_foods = []
-        eval_map_writes = []
         eval_rewards = []
 
         for ep in range(1, num_episodes + 1):
             obs_dict, _ = self.env.reset(seed=5000 + ep)
             ep_rewards = {a: 0.0 for a in self.env.possible_agents}
             food_count = 0
-            map_write_count = 0
             step = 0
 
             while self.env.agents and step < max_steps:
@@ -289,9 +278,6 @@ class PPOTrainer:
                             action = torch.argmax(logits, dim=-1).item()
                         actions[agent] = action
 
-                        if action == 5:
-                            map_write_count += 1
-
                 obs_dict, rewards, terminations, truncations, infos = self.env.step(actions)
                 for agent, r in rewards.items():
                     ep_rewards[agent] += r
@@ -301,26 +287,22 @@ class PPOTrainer:
             mean_r = np.mean(list(ep_rewards.values()))
             eval_survivals.append(step)
             eval_foods.append(food_count)
-            eval_map_writes.append(map_write_count)
             eval_rewards.append(mean_r)
 
             print(
-                f"Eval Ep {ep}: Survived {step:3d} steps | Foods Found: {food_count} | "
-                f"Map Writes: {map_write_count} | Avg Reward: {mean_r:.2f}"
+                f"Eval Ep {ep}: Survived {step:3d} steps | Foods Found: {food_count} | Avg Reward: {mean_r:.2f}"
             )
 
         print("-" * 65)
-        print("EVALUATION SUMMARY (TRAINED PPO AGENTS):")
+        print("EVALUATION SUMMARY (TRAINED RL AGENTS):")
         print(f"  Average Survival Steps: {np.mean(eval_survivals):.1f} / {max_steps}")
         print(f"  Average Food Found Per Ep: {np.mean(eval_foods):.1f}")
-        print(f"  Average Map Signaling Count: {np.mean(eval_map_writes):.1f}")
         print(f"  Average Cumulative Reward: {np.mean(eval_rewards):.2f}")
         print("=" * 65)
 
         return {
             "mean_survival_steps": float(np.mean(eval_survivals)),
             "mean_food_found": float(np.mean(eval_foods)),
-            "mean_map_writes": float(np.mean(eval_map_writes)),
             "mean_reward": float(np.mean(eval_rewards)),
         }
 
@@ -330,21 +312,19 @@ def main():
     trainer = PPOTrainer(env, lr=5e-4, initial_ent_coef=0.08, final_ent_coef=0.02)
 
     history = trainer.train(
-        total_episodes=500,
-        max_steps_per_episode=200,
+        total_episodes=300,
+        max_steps_per_episode=150,
         update_frequency_steps=1024,
         log_interval=50,
-        save_path=os.path.join(CURRENT_DIR, "marl_survival_model.pt"),
+        save_path=DEFAULT_MODEL_PATH,
     )
 
-    history_path = os.path.join(CURRENT_DIR, "training_history.json")
-    with open(history_path, "w", encoding="utf-8") as f:
+    with open(DEFAULT_HISTORY_PATH, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
 
-    eval_results = trainer.evaluate(num_episodes=5, max_steps=200, temperature=0.5)
+    eval_results = trainer.evaluate(num_episodes=5, max_steps=150, temperature=0.6)
 
-    eval_path = os.path.join(CURRENT_DIR, "eval_results.json")
-    with open(eval_path, "w", encoding="utf-8") as f:
+    with open(DEFAULT_EVAL_PATH, "w", encoding="utf-8") as f:
         json.dump(eval_results, f, indent=2)
 
 

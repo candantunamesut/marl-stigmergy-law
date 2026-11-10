@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARL Kollektif Hayatta Kalma Simulasyonu</title>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --panel-bg: #1e293b;
+            --border-color: #334155;
+            --accent-blue: #38bdf8;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --accent-amber: #f59e0b;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .header h1 {
+            font-size: 1.8rem;
+            color: var(--accent-blue);
+            margin-bottom: 0.3rem;
+        }
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+        .container {
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .grid-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(20, 22px);
+            grid-template-rows: repeat(20, 22px);
+            gap: 2px;
+            background: #090d16;
+            padding: 6px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        .cell {
+            width: 22px;
+            height: 22px;
+            background: #151f32;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            user-select: none;
+            transition: all 0.15s ease;
+        }
+        .cell.food {
+            background: #064e3b;
+            color: #34d399;
+            box-shadow: 0 0 6px rgba(52, 211, 153, 0.4);
+        }
+        .cell.agent-0 { background: #1d4ed8; color: #fff; box-shadow: 0 0 8px rgba(59, 130, 246, 0.6); }
+        .cell.agent-1 { background: #b91c1c; color: #fff; box-shadow: 0 0 8px rgba(239, 68, 68, 0.6); }
+        .cell.agent-2 { background: #b45309; color: #fff; box-shadow: 0 0 8px rgba(245, 158, 11, 0.6); }
+        .cell.agent-3 { background: #6d28d9; color: #fff; box-shadow: 0 0 8px rgba(139, 92, 246, 0.6); }
+
+        .sidebar {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .card {
+            background: var(--panel-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.4rem;
+        }
+        .agent-row {
+            margin-bottom: 0.8rem;
+        }
+        .agent-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+        }
+        .bar-container {
+            background: #090d16;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            transition: width 0.2s ease, background-color 0.2s ease;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .btn-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        button {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        button:hover { background: #1d4ed8; }
+        button:disabled { background: #475569; cursor: not-allowed; }
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent-blue);
+            cursor: pointer;
+        }
+        .log-box {
+            max-height: 140px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .log-item {
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            background: #151f32;
+        }
+        .log-food { color: #34d399; }
+        .log-death { color: #f87171; }
+        .log-shared { color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>MARL Kollektif Hayatta Kalma & Kaynak Paylaşımı Simulasyonu</h1>
+        <p>20x20 Izgara Alanında Bağımsız Ajanların Hayatta Kalma Dinamikleri ve Takım Ödülü</p>
+    </div>
+
+    <div class="container">
+        <div class="grid-panel">
+            <div id="grid"></div>
+        </div>
+
+        <div class="sidebar">
+            <div class="card controls">
+                <div class="card-title">
+                    <span>Oynatma Kontrolleri</span>
+                    <span id="step-label" style="color: var(--accent-blue); font-size: 0.9rem;">Adım: 0 / 0</span>
+                </div>
+                <input type="range" id="step-slider" min="0" max="0" value="0">
+                <div class="btn-row">
+                    <button id="btn-play">Oynat</button>
+                    <button id="btn-prev">Önceki</button>
+                    <button id="btn-next">Sonraki</button>
+                    <button id="btn-reset">Başa Dön</button>
+                    <select id="speed-select" style="background:#090d16; color:#fff; border:1px solid var(--border-color); padding:0.4rem; border-radius:6px; margin-left:auto;">
+                        <option value="400">0.5x</option>
+                        <option value="200" selected>1.0x</option>
+                        <option value="100">2.0x</option>
+                        <option value="40">5.0x</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Ajan Sağlık Durumları (Maks 60 HP)</div>
+                <div id="agents-panel"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Adım Olayları ve Ödüller</div>
+                <div class="log-box" id="event-logs"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const frames = [{"step": 0, "agents": [{"id": 0, "name": "agent_0", "x": 14, "y": 1, "health": 60.0, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 60.0, "alive": true}, {"id": 2, "name": "agent_2", "x": 14, "y": 8, "health": 60.0, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 60.0, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": ["Sim\u00fclasyon ba\u015flang\u0131c\u0131. T\u00fcm ajanlar 60 HP ile yerle\u015fti."]}, {"step": 1, "agents": [{"id": 0, "name": "agent_0", "x": 15, "y": 1, "health": 60.0, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 59.8, "alive": true}, {"id": 2, "name": "agent_2", "x": 15, "y": 8, "health": 59.8, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 59.8, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": [">>> agent_0 YEMEK YED\u0130 (+60 HP & +60 \u00d6d\u00fcl)!", ">>> agent_1 tak\u0131m arkada\u015f\u0131 yeme\u011finden pay ald\u0131 (+6.0 \u00d6d\u00fcl)!", ">>> agent_2 tak\u0131m arkada\u015f\u0131 yeme\u011finden pay ald\u0131 (+6.0 \u00d6d\u00fcl)!", ">>> agent_3 tak\u0131m arkada\u015f\u0131 yeme\u011finden pay ald\u0131 (+6.0 \u00d6d\u00fcl)!"]}, {"step": 2, "agents": [{"id": 0, "name": "agent_0", "x": 16, "y": 1, "health": 59.8, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 59.599999999999994, "alive": true}, {"id": 2, "name": "agent_2", "x": 16, "y": 8, "health": 59.599999999999994, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 59.599999999999994, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 3, "agents": [{"id": 0, "name": "agent_0", "x": 17, "y": 1, "health": 59.599999999999994, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 59.39999999999999, "alive": true}, {"id": 2, "name": "agent_2", "x": 17, "y": 8, "health": 59.39999999999999, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 59.39999999999999, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 4, "agents": [{"id": 0, "name": "agent_0", "x": 18, "y": 1, "health": 59.39999999999999, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 59.19999999999999, "alive": true}, {"id": 2, "name": "agent_2", "x": 18, "y": 8, "health": 59.19999999999999, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 59.19999999999999, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 5, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 59.19999999999999, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 58.999999999999986, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 58.999999999999986, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 58.999999999999986, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 6, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 58.999999999999986, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 58.79999999999998, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 58.79999999999998, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 58.79999999999998, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 7, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 58.79999999999998, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 58.59999999999998, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 58.59999999999998, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 58.59999999999998, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 8, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 58.59999999999998, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 58.39999999999998, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 58.39999999999998, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 58.39999999999998, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 9, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 58.39999999999998, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 58.199999999999974, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 58.199999999999974, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 58.199999999999974, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 10, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 58.199999999999974, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 57.99999999999997, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 57.99999999999997, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 57.99999999999997, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 11, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 57.99999999999997, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 57.79999999999997, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 57.79999999999997, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 57.79999999999997, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 12, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 57.79999999999997, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 57.599999999999966, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 57.599999999999966, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 57.599999999999966, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 13, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 57.599999999999966, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 17, "health": 57.39999999999996, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 57.39999999999996, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 57.39999999999996, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 14, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 57.39999999999996, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 57.19999999999996, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 57.19999999999996, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 57.19999999999996, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 15, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 57.19999999999996, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 56.99999999999996, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 56.99999999999996, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 56.99999999999996, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 16, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 56.99999999999996, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 56.799999999999955, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 56.799999999999955, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 56.799999999999955, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 17, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 56.799999999999955, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 56.59999999999995, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 56.59999999999995, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 56.59999999999995, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 18, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 56.59999999999995, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 56.39999999999995, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 56.39999999999995, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 56.39999999999995, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 19, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 56.39999999999995, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 56.199999999999946, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 56.199999999999946, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 56.199999999999946, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 20, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 56.199999999999946, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 55.99999999999994, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 55.99999999999994, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 55.99999999999994, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 21, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 55.99999999999994, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 55.79999999999994, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 55.79999999999994, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 55.79999999999994, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 22, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 55.79999999999994, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 55.59999999999994, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 55.59999999999994, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 55.59999999999994, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 23, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 55.59999999999994, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 55.399999999999935, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 55.399999999999935, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 55.399999999999935, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 24, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 55.399999999999935, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 55.19999999999993, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 55.19999999999993, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 55.19999999999993, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 25, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 55.19999999999993, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 16, "health": 54.99999999999993, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 54.99999999999993, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 54.99999999999993, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 26, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 54.99999999999993, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 54.799999999999926, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 54.799999999999926, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 54.799999999999926, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 27, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 54.799999999999926, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 54.59999999999992, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 54.59999999999992, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 54.59999999999992, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 28, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 54.59999999999992, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 54.39999999999992, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 54.39999999999992, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 54.39999999999992, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 29, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 54.39999999999992, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 54.19999999999992, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 54.19999999999992, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 54.19999999999992, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 30, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 54.19999999999992, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 53.999999999999915, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 53.999999999999915, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 53.999999999999915, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 31, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 53.999999999999915, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 53.79999999999991, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 53.79999999999991, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 53.79999999999991, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 32, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 53.79999999999991, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 53.59999999999991, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 53.59999999999991, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 53.59999999999991, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 33, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 53.59999999999991, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 53.399999999999906, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 53.399999999999906, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 53.399999999999906, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 34, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 53.399999999999906, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 53.1999999999999, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 53.1999999999999, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 53.1999999999999, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 35, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 53.1999999999999, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 52.9999999999999, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 52.9999999999999, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 52.9999999999999, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 36, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 52.9999999999999, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 52.7999999999999, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 52.7999999999999, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 52.7999999999999, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 37, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 52.7999999999999, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 15, "health": 52.599999999999895, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 52.599999999999895, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 52.599999999999895, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 38, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 52.599999999999895, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 52.39999999999989, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 52.39999999999989, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 52.39999999999989, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 39, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 52.39999999999989, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 52.19999999999989, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 52.19999999999989, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 52.19999999999989, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 40, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 52.19999999999989, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 51.999999999999886, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 51.999999999999886, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 51.999999999999886, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 41, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 51.999999999999886, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 51.79999999999988, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 51.79999999999988, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 51.79999999999988, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 42, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 51.79999999999988, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 51.59999999999988, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 51.59999999999988, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 51.59999999999988, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 43, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 51.59999999999988, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 51.39999999999988, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 51.39999999999988, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 51.39999999999988, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 44, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 51.39999999999988, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 51.199999999999875, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 51.199999999999875, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 51.199999999999875, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 45, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 51.199999999999875, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 50.99999999999987, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 50.99999999999987, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 50.99999999999987, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 46, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 50.99999999999987, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 50.79999999999987, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 50.79999999999987, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 50.79999999999987, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 47, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 50.79999999999987, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 50.599999999999866, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 50.599999999999866, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 50.599999999999866, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 48, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 50.599999999999866, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 50.399999999999864, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 50.399999999999864, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 50.399999999999864, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 49, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 50.399999999999864, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 14, "health": 50.19999999999986, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 50.19999999999986, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 50.19999999999986, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 50, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 50.19999999999986, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 49.99999999999986, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 49.99999999999986, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 49.99999999999986, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 51, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 49.99999999999986, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 49.799999999999855, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 49.799999999999855, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 49.799999999999855, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 52, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 49.799999999999855, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 49.59999999999985, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 49.59999999999985, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 49.59999999999985, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 53, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 49.59999999999985, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 49.39999999999985, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 49.39999999999985, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 49.39999999999985, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 54, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 49.39999999999985, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 49.19999999999985, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 49.19999999999985, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 49.19999999999985, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 55, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 49.19999999999985, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 48.999999999999844, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 48.999999999999844, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 48.999999999999844, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 56, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 48.999999999999844, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 48.79999999999984, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 48.79999999999984, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 48.79999999999984, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 57, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 48.79999999999984, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 48.59999999999984, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 48.59999999999984, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 48.59999999999984, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 58, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 48.59999999999984, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 48.399999999999835, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 48.399999999999835, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 48.399999999999835, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 59, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 48.399999999999835, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 48.19999999999983, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 48.19999999999983, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 48.19999999999983, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 60, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 48.19999999999983, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 47.99999999999983, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 47.99999999999983, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 47.99999999999983, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 61, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 47.99999999999983, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 13, "health": 47.79999999999983, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 47.79999999999983, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 47.79999999999983, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 62, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 47.79999999999983, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 47.599999999999824, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 47.599999999999824, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 47.599999999999824, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 63, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 47.599999999999824, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 47.39999999999982, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 47.39999999999982, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 47.39999999999982, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 64, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 47.39999999999982, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 47.19999999999982, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 47.19999999999982, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 47.19999999999982, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 65, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 47.19999999999982, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 46.999999999999815, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 46.999999999999815, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 46.999999999999815, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 66, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 46.999999999999815, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 46.79999999999981, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 46.79999999999981, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 46.79999999999981, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 67, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 46.79999999999981, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 46.59999999999981, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 46.59999999999981, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 46.59999999999981, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 68, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 46.59999999999981, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 46.39999999999981, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 46.39999999999981, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 46.39999999999981, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 69, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 46.39999999999981, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 46.199999999999804, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 46.199999999999804, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 46.199999999999804, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 70, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 46.199999999999804, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 45.9999999999998, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 45.9999999999998, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 45.9999999999998, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 71, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 45.9999999999998, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 45.7999999999998, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 45.7999999999998, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 45.7999999999998, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 72, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 45.7999999999998, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 12, "health": 45.599999999999795, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 45.599999999999795, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 45.599999999999795, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 73, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 45.599999999999795, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 45.39999999999979, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 45.39999999999979, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 45.39999999999979, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 74, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 45.39999999999979, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 45.19999999999979, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 45.19999999999979, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 45.19999999999979, "alive": true}], "foods": [{"x": 15, "y": 1, "active": false}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 75, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 45.19999999999979, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 44.99999999999979, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 44.99999999999979, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 44.99999999999979, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 76, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 44.99999999999979, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 44.799999999999784, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 44.799999999999784, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 44.799999999999784, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 77, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 44.799999999999784, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 44.59999999999978, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 44.59999999999978, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 44.59999999999978, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 78, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 44.59999999999978, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 44.39999999999978, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 44.39999999999978, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 44.39999999999978, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 79, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 44.39999999999978, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 44.199999999999775, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 44.199999999999775, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 44.199999999999775, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 80, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 44.199999999999775, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 43.99999999999977, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 43.99999999999977, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 43.99999999999977, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 81, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 43.99999999999977, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 43.79999999999977, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 43.79999999999977, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 43.79999999999977, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 82, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 43.79999999999977, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 43.59999999999977, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 43.59999999999977, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 43.59999999999977, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 83, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 43.59999999999977, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 43.399999999999764, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 43.399999999999764, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 43.399999999999764, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 84, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 43.399999999999764, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 11, "health": 43.19999999999976, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 43.19999999999976, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 43.19999999999976, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 85, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 43.19999999999976, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 42.99999999999976, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 42.99999999999976, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 42.99999999999976, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 86, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 42.99999999999976, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 42.799999999999756, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 42.799999999999756, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 42.799999999999756, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 87, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 42.799999999999756, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 42.59999999999975, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 42.59999999999975, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 42.59999999999975, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 88, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 42.59999999999975, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 42.39999999999975, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 42.39999999999975, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 42.39999999999975, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 89, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 42.39999999999975, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 42.19999999999975, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 42.19999999999975, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 42.19999999999975, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 90, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 42.19999999999975, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 41.999999999999744, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 41.999999999999744, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 41.999999999999744, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 91, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 41.999999999999744, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 41.79999999999974, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 41.79999999999974, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 41.79999999999974, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 92, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 41.79999999999974, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 41.59999999999974, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 41.59999999999974, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 41.59999999999974, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 93, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 41.59999999999974, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 41.399999999999736, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 41.399999999999736, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 41.399999999999736, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 94, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 41.399999999999736, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 41.19999999999973, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 41.19999999999973, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 41.19999999999973, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 95, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 41.19999999999973, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 10, "health": 40.99999999999973, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 40.99999999999973, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 40.99999999999973, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 96, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 40.99999999999973, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 9, "health": 40.79999999999973, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 40.79999999999973, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 12, "health": 40.79999999999973, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 97, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 40.79999999999973, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 9, "health": 40.599999999999724, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 40.599999999999724, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 11, "health": 40.599999999999724, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 98, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 40.599999999999724, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 9, "health": 40.39999999999972, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 40.39999999999972, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 11, "health": 40.39999999999972, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 99, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 40.39999999999972, "alive": true}, {"id": 1, "name": "agent_1", "x": 2, "y": 9, "health": 40.19999999999972, "alive": true}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 40.19999999999972, "alive": true}, {"id": 3, "name": "agent_3", "x": 19, "y": 11, "health": 40.19999999999972, "alive": true}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}, {"step": 100, "agents": [{"id": 0, "name": "agent_0", "x": 19, "y": 1, "health": 40.19999999999972, "alive": false}, {"id": 1, "name": "agent_1", "x": 2, "y": 9, "health": 39.999999999999716, "alive": false}, {"id": 2, "name": "agent_2", "x": 19, "y": 8, "health": 39.999999999999716, "alive": false}, {"id": 3, "name": "agent_3", "x": 19, "y": 11, "health": 39.999999999999716, "alive": false}], "foods": [{"x": 15, "y": 1, "active": true}, {"x": 5, "y": 15, "active": true}, {"x": 12, "y": 8, "active": true}], "events": []}];
+        const GRID_SIZE = 20;
+        let currentFrameIndex = 0;
+        let isPlaying = false;
+        let playTimer = null;
+
+        const gridEl = document.getElementById("grid");
+        const slider = document.getElementById("step-slider");
+        const stepLabel = document.getElementById("step-label");
+        const btnPlay = document.getElementById("btn-play");
+        const btnPrev = document.getElementById("btn-prev");
+        const btnNext = document.getElementById("btn-next");
+        const btnReset = document.getElementById("btn-reset");
+        const speedSelect = document.getElementById("speed-select");
+        const agentsPanel = document.getElementById("agents-panel");
+        const eventLogs = document.getElementById("event-logs");
+
+        slider.max = Math.max(0, frames.length - 1);
+
+        // Grid cells init
+        const cells = [];
+        for (let y = 0; y < GRID_SIZE; y++) {
+            for (let x = 0; x < GRID_SIZE; x++) {
+                const cell = document.createElement("div");
+                cell.className = "cell";
+                gridEl.appendChild(cell);
+                cells.push(cell);
+            }
+        }
+
+        function renderFrame(idx) {
+            if (!frames[idx]) return;
+            const f = frames[idx];
+            currentFrameIndex = idx;
+            slider.value = idx;
+            stepLabel.textContent = `Adım: ${f.step} / ${frames[frames.length - 1].step}`;
+
+            // Reset grid
+            cells.forEach(c => {
+                c.className = "cell";
+                c.textContent = "";
+            });
+
+            // Place food
+            f.foods.forEach(food => {
+                if (food.active) {
+                    const cIdx = food.y * GRID_SIZE + food.x;
+                    if (cells[cIdx]) {
+                        cells[cIdx].classList.add("food");
+                        cells[cIdx].textContent = "F";
+                    }
+                }
+            });
+
+            // Place agents
+            f.agents.forEach(a => {
+                if (a.alive) {
+                    const cIdx = a.y * GRID_SIZE + a.x;
+                    if (cells[cIdx]) {
+                        cells[cIdx].classList.add(`agent-${a.id}`);
+                        cells[cIdx].textContent = a.id;
+                    }
+                }
+            });
+
+            // Render health bars
+            agentsPanel.innerHTML = "";
+            f.agents.forEach(a => {
+                const pct = Math.max(0, Math.min(100, (a.health / 60.0) * 100));
+                let color = "#22c55e";
+                if (pct < 30) color = "#ef4444";
+                else if (pct < 60) color = "#f59e0b";
+
+                const row = document.createElement("div");
+                row.className = "agent-row";
+                row.innerHTML = `
+                    <div class="agent-header">
+                        <span><strong>Ajan ${a.id}</strong> ${a.alive ? "" : "(ÖLDÜ)"}</span>
+                        <span>${a.health.toFixed(1)} / 60 HP</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill" style="width: ${pct}%; background: ${color};"></div>
+                    </div>
+                `;
+                agentsPanel.appendChild(row);
+            });
+
+            // Render logs
+            eventLogs.innerHTML = "";
+            if (f.events && f.events.length > 0) {
+                f.events.forEach(ev => {
+                    const item = document.createElement("div");
+                    item.className = "log-item";
+                    if (ev.includes("Yemek")) item.classList.add("log-food");
+                    else if (ev.includes("Öldü")) item.classList.add("log-death");
+                    else if (ev.includes("%10")) item.classList.add("log-shared");
+                    item.textContent = ev;
+                    eventLogs.appendChild(item);
+                });
+            } else {
+                eventLogs.innerHTML = '<div style="color:#64748b;">Bu adımda özel bir olay gerçekleşmedi.</div>';
+            }
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            btnPlay.textContent = isPlaying ? "Durdur" : "Oynat";
+            if (isPlaying) {
+                runPlay();
+            } else {
+                clearTimeout(playTimer);
+            }
+        }
+
+        function runPlay() {
+            if (!isPlaying) return;
+            if (currentFrameIndex < frames.length - 1) {
+                renderFrame(currentFrameIndex + 1);
+                playTimer = setTimeout(runPlay, parseInt(speedSelect.value));
+            } else {
+                isPlaying = false;
+                btnPlay.textContent = "Oynat";
+            }
+        }
+
+        btnPlay.addEventListener("click", togglePlay);
+        btnPrev.addEventListener("click", () => {
+            if (currentFrameIndex > 0) renderFrame(currentFrameIndex - 1);
+        });
+        btnNext.addEventListener("click", () => {
+            if (currentFrameIndex < frames.length - 1) renderFrame(currentFrameIndex + 1);
+        });
+        btnReset.addEventListener("click", () => {
+            renderFrame(0);
+        });
+        slider.addEventListener("input", (e) => {
+            renderFrame(parseInt(e.target.value));
+        });
+
+        // Initial render
+        renderFrame(0);
+    </script>
+</body>
+</html>

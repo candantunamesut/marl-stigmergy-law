@@ -6,225 +6,134 @@ import numpy as np
 import torch
 
 try:
-    from env import MARLSurvivalEnv, ACTION_NAMES
+    from env import MARLSurvivalEnv
     from model import ActorCritic
     from config import CONFIG
 except ImportError:
-    from marl_ppo.env import MARLSurvivalEnv, ACTION_NAMES
-    from marl_ppo.model import ActorCritic
-    from marl_ppo.config import CONFIG
+    from marl_survival_experiment.env import MARLSurvivalEnv
+    from marl_survival_experiment.model import ActorCritic
+    from marl_survival_experiment.config import CONFIG
 
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+EVO_MODEL_PATH = os.path.join(BASE_DIR, "evolution_best_model.pt")
+EVO_HISTORY_PATH = os.path.join(BASE_DIR, "evolution_history.json")
 
 
-class NeuroevolutionTrainer:
-    """
-    Genetic / Neuroevolution Algorithm for Multi-Agent Survival and Stigmergy.
-    Directly optimizes cumulative episodic fitness (survival steps + food found + cooperation),
-    providing a non-gradient global optimization alternative to PPO.
-    """
-    def __init__(
-        self,
-        env: MARLSurvivalEnv,
-        pop_size: int = 20,
-        elite_count: int = 2,
-        mutation_rate: float = 0.1,
-        mutation_power: float = 0.08,
-        device: str = "cpu",
-    ):
-        self.env = env
-        self.pop_size = pop_size
-        self.elite_count = elite_count
-        self.mutation_rate = mutation_rate
-        self.mutation_power = mutation_power
-        self.device = torch.device(device)
+def evaluate_individual(env: MARLSurvivalEnv, model: ActorCritic, weights: np.ndarray, num_episodes: int = 3, max_steps: int = 120, base_seed: int = 7000) -> float:
+    """Evaluates an individual parameter vector over deterministic seeds and returns fitness."""
+    model.set_flat_weights(weights)
+    model.eval()
 
-        # Template network
-        self.template_model = ActorCritic(obs_dim=30, action_dim=6, hidden_dim=128).to(self.device)
-        self.param_dim = len(self.template_model.get_flat_weights())
+    total_fitness = 0.0
 
-        # Initialize population with random weights
-        self.population = [
-            self.template_model.get_flat_weights() + np.random.randn(self.param_dim) * 0.1
-            for _ in range(self.pop_size)
-        ]
-
-    def evaluate_individual(self, weights: np.ndarray, num_episodes: int = 2, max_steps: int = 200, seed_base: int = 2000):
-        """
-        Evaluate an individual policy across multiple episodes.
-        Returns total cumulative reward, survival steps, food found, and map writes.
-        """
-        self.template_model.set_flat_weights(weights)
-        self.template_model.eval()
-
-        ep_rewards = []
-        ep_lengths = []
-        ep_foods = []
-        ep_map_writes = []
-
+    with torch.no_grad():
         for ep in range(num_episodes):
-            obs_dict, _ = self.env.reset(seed=seed_base + ep)
-            episode_reward = {a: 0.0 for a in self.env.possible_agents}
-            food_found_in_ep = 0
-            map_writes_in_ep = 0
+            obs_dict, _ = env.reset(seed=base_seed + ep * 13)
+            ep_reward = 0.0
             step = 0
 
-            while self.env.agents and step < max_steps:
+            while env.agents and step < max_steps:
                 step += 1
                 actions = {}
-                with torch.no_grad():
-                    for agent in self.env.agents:
-                        obs_tensor = torch.tensor(
-                            obs_dict[agent], dtype=torch.float32, device=self.device
-                        ).unsqueeze(0)
-                        logits, _ = self.template_model(obs_tensor)
-                        action = torch.argmax(logits, dim=-1).item()
-                        actions[agent] = action
+                for agent in env.agents:
+                    obs_t = torch.tensor(obs_dict[agent], dtype=torch.float32).unsqueeze(0)
+                    logits, _ = model(obs_t)
+                    actions[agent] = torch.argmax(logits, dim=-1).item()
 
-                        if action == 5:  # WRITE_TO_MAP
-                            map_writes_in_ep += 1
+                obs_dict, rewards, terminations, truncations, infos = env.step(actions)
+                ep_reward += sum(rewards.values())
 
-                obs_dict, rewards, terminations, truncations, infos = self.env.step(actions)
-                for agent, r in rewards.items():
-                    episode_reward[agent] += r
-                    if infos.get(agent, {}).get("food_found"):
-                        food_found_in_ep += 1
+            # Fitness balances survival steps and collective team rewards
+            fitness = step * 2.0 + ep_reward
+            total_fitness += fitness
 
-            mean_r = np.mean([episode_reward[a] for a in self.env.possible_agents])
-            ep_rewards.append(mean_r)
-            ep_lengths.append(step)
-            ep_foods.append(food_found_in_ep)
-            ep_map_writes.append(map_writes_in_ep)
-
-        avg_reward = float(np.mean(ep_rewards))
-        avg_steps = float(np.mean(ep_lengths))
-        avg_foods = float(np.mean(ep_foods))
-        avg_writes = float(np.mean(ep_map_writes))
-
-        # Fitness: primarily total episodic survival & food reward
-        fitness = avg_reward + (avg_foods * 20.0) + (avg_steps * 0.1)
-
-        return {
-            "fitness": fitness,
-            "reward": avg_reward,
-            "steps": avg_steps,
-            "food": avg_foods,
-            "writes": avg_writes,
-        }
-
-    def train(
-        self,
-        generations: int = 40,
-        eval_episodes_per_ind: int = 2,
-        max_steps_per_episode: int = 200,
-        save_path: str = None,
-    ):
-        if save_path is None:
-            save_path = os.path.join(CURRENT_DIR, "evolution_best_model.pt")
-
-        print("=" * 65)
-        print("STARTING NEUROEVOLUTION TRAINING (GENETIC ALGORITHM + STIGMERGY)")
-        print(f"Population: {self.pop_size} | Generations: {generations} | Elites: {self.elite_count}")
-        print("=" * 65)
-
-        history = []
-        best_overall_fitness = -float("inf")
-        best_overall_weights = None
-        start_time = time.time()
-
-        for gen in range(1, generations + 1):
-            gen_results = []
-            seed_base = 3000 + gen * 10
-
-            for i, ind in enumerate(self.population):
-                res = self.evaluate_individual(
-                    ind, num_episodes=eval_episodes_per_ind,
-                    max_steps=max_steps_per_episode, seed_base=seed_base
-                )
-                gen_results.append(res)
-
-            fitnesses = [r["fitness"] for r in gen_results]
-            sorted_indices = np.argsort(fitnesses)[::-1]  # descending order
-
-            best_idx = sorted_indices[0]
-            best_res = gen_results[best_idx]
-            avg_fitness = float(np.mean(fitnesses))
-            avg_steps = float(np.mean([r["steps"] for r in gen_results]))
-            avg_food = float(np.mean([r["food"] for r in gen_results]))
-            avg_writes = float(np.mean([r["writes"] for r in gen_results]))
-            avg_reward = float(np.mean([r["reward"] for r in gen_results]))
-
-            if best_res["fitness"] > best_overall_fitness:
-                best_overall_fitness = best_res["fitness"]
-                best_overall_weights = copy.deepcopy(self.population[best_idx])
-
-            elapsed = time.time() - start_time
-            print(
-                f"Gen {gen:2d}/{generations} | Best Fit: {best_res['fitness']:7.1f} | "
-                f"Avg Fit: {avg_fitness:7.1f} | Surv. Steps: {avg_steps:5.1f} | "
-                f"Food: {avg_food:4.1f} | Writes: {avg_writes:4.1f} | Time: {elapsed:.1f}s"
-            )
-
-            history.append({
-                "generation": gen,
-                "best_fitness": best_res["fitness"],
-                "avg_fitness": avg_fitness,
-                "avg_survival_steps": avg_steps,
-                "avg_food_found": avg_food,
-                "avg_map_writes": avg_writes,
-                "avg_reward": avg_reward,
-            })
-
-            # Next Generation Breeding
-            new_pop = []
-            # 1. Elitism: Retain top performers
-            for e in range(self.elite_count):
-                new_pop.append(copy.deepcopy(self.population[sorted_indices[e]]))
-
-            # 2. Tournament Selection + Crossover + Mutation
-            while len(new_pop) < self.pop_size:
-                # Tournament selection (size 3)
-                p1_cands = np.random.choice(sorted_indices[: self.pop_size // 2], size=2, replace=False)
-                p2_cands = np.random.choice(sorted_indices[: self.pop_size // 2], size=2, replace=False)
-                parent1 = self.population[p1_cands[0]]
-                parent2 = self.population[p2_cands[0]]
-
-                # Uniform crossover
-                mask = np.random.rand(self.param_dim) < 0.5
-                child = np.where(mask, parent1, parent2)
-
-                # Mutation
-                mutation_mask = np.random.rand(self.param_dim) < self.mutation_rate
-                noise = np.random.randn(self.param_dim) * self.mutation_power
-                child += mutation_mask * noise
-
-                new_pop.append(child)
-
-            self.population = new_pop
-
-        # Save best model
-        self.template_model.set_flat_weights(best_overall_weights)
-        torch.save(self.template_model.state_dict(), save_path)
-        print(f"\nBest Evolutionary policy saved to: {save_path}")
-
-        return history
+    return float(total_fitness / num_episodes)
 
 
-def main():
-    env = MARLSurvivalEnv(config=CONFIG)
-    trainer = NeuroevolutionTrainer(env, pop_size=20, elite_count=2)
+def train_evolution(
+    population_size: int = 20,
+    generations: int = 25,
+    top_k: int = 4,
+    mutation_power: float = 0.05,
+    max_steps_per_episode: int = 100,
+    save_path: str = EVO_MODEL_PATH,
+):
+    print("=" * 65)
+    print("STARTING NEUROEVOLUTION (GENETIC ALGORITHM) FOR MARL SURVIVAL")
+    print(f"Population: {population_size} | Generations: {generations} | Elites (Top-K): {top_k}")
+    print("=" * 65)
 
-    history = trainer.train(
-        generations=30,
-        eval_episodes_per_ind=2,
-        max_steps_per_episode=200,
-        save_path=os.path.join(CURRENT_DIR, "evolution_best_model.pt"),
-    )
+    env = MARLSurvivalEnv(config=CONFIG, max_steps=max_steps_per_episode)
+    template_model = ActorCritic(obs_dim=21, action_dim=5, hidden_dim=128)
+    base_weights = template_model.get_flat_weights()
+    num_params = len(base_weights)
 
-    history_path = os.path.join(CURRENT_DIR, "evolution_history.json")
-    with open(history_path, "w", encoding="utf-8") as f:
+    # Initialize population with random perturbations around base weights
+    population = [
+        base_weights + np.random.randn(num_params).astype(np.float32) * 0.1
+        for _ in range(population_size)
+    ]
+
+    best_overall_fitness = -1e9
+    best_overall_weights = None
+    history = []
+
+    start_time = time.time()
+
+    for gen in range(1, generations + 1):
+        fitness_scores = []
+        for ind_idx, ind in enumerate(population):
+            score = evaluate_individual(env, template_model, ind, num_episodes=2, max_steps=max_steps_per_episode, base_seed=gen * 100)
+            fitness_scores.append(score)
+
+        fitness_scores = np.array(fitness_scores)
+        sorted_indices = np.argsort(fitness_scores)[::-1]
+
+        best_gen_fitness = fitness_scores[sorted_indices[0]]
+        avg_gen_fitness = np.mean(fitness_scores)
+
+        if best_gen_fitness > best_overall_fitness:
+            best_overall_fitness = best_gen_fitness
+            best_overall_weights = copy.deepcopy(population[sorted_indices[0]])
+
+        elapsed = time.time() - start_time
+        print(
+            f"Gen {gen:2d}/{generations} | Best Fitness: {best_gen_fitness:7.1f} | "
+            f"Avg Fitness: {avg_gen_fitness:7.1f} | Overall Best: {best_overall_fitness:7.1f} | Elapsed: {elapsed:.1f}s"
+        )
+
+        history.append({
+            "generation": gen,
+            "best_fitness": float(best_gen_fitness),
+            "avg_fitness": float(avg_gen_fitness),
+        })
+
+        # Selection: top_k elites
+        elites = [population[idx] for idx in sorted_indices[:top_k]]
+
+        # Next generation: Elites + mutated offspring
+        new_population = [copy.deepcopy(elite) for elite in elites]
+
+        while len(new_population) < population_size:
+            # Pick a random elite parent
+            parent = elites[np.random.randint(0, top_k)]
+            # Mutate with Gaussian noise
+            noise = np.random.randn(num_params).astype(np.float32) * mutation_power
+            child = parent + noise
+            new_population.append(child)
+
+        population = new_population
+
+    # Save best individual weights
+    template_model.set_flat_weights(best_overall_weights)
+    torch.save(template_model.state_dict(), save_path)
+    print(f"\n[OK] Best evolutionary policy saved to: {save_path}")
+
+    with open(EVO_HISTORY_PATH, "w", encoding="utf-8") as f:
         json.dump(history, f, indent=2)
+
+    return best_overall_fitness
 
 
 if __name__ == "__main__":
-    main()
+    train_evolution(population_size=15, generations=10, top_k=3, max_steps_per_episode=80)

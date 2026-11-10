@@ -1,0 +1,5652 @@
+[
+  {
+    "episode": 1,
+    "seed": 59,
+    "initial_agents": {
+      "agent_0": [
+        6,
+        2
+      ],
+      "agent_1": [
+        12,
+        11
+      ],
+      "agent_2": [
+        7,
+        16
+      ],
+      "agent_3": [
+        11,
+        12
+      ]
+    },
+    "initial_foods": [
+      [
+        10,
+        15
+      ],
+      [
+        1,
+        16
+      ],
+      [
+        15,
+        14
+      ]
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              6,
+              2
+            ],
+            "new_pos": [
+              7,
+              2
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              12,
+              11
+            ],
+            "new_pos": [
+              13,
+              11
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              7,
+              16
+            ],
+            "new_pos": [
+              7,
+              16
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              11,
+              12
+            ],
+            "new_pos": [
+              12,
+              12
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            10,
+            15
+          ],
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 2,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              7,
+              2
+            ],
+            "new_pos": [
+              8,
+              2
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              13,
+              11
+            ],
+            "new_pos": [
+              14,
+              11
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              7,
+              16
+            ],
+            "new_pos": [
+              7,
+              15
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              12,
+              12
+            ],
+            "new_pos": [
+              12,
+              12
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            10,
+            15
+          ],
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 3,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              8,
+              2
+            ],
+            "new_pos": [
+              8,
+              1
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              14,
+              11
+            ],
+            "new_pos": [
+              15,
+              11
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              7,
+              15
+            ],
+            "new_pos": [
+              8,
+              15
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              12,
+              12
+            ],
+            "new_pos": [
+              13,
+              12
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            10,
+            15
+          ],
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 4,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              8,
+              1
+            ],
+            "new_pos": [
+              9,
+              1
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              15,
+              11
+            ],
+            "new_pos": [
+              15,
+              12
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              8,
+              15
+            ],
+            "new_pos": [
+              9,
+              15
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              13,
+              12
+            ],
+            "new_pos": [
+              13,
+              12
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            10,
+            15
+          ],
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 5,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              9,
+              1
+            ],
+            "new_pos": [
+              10,
+              1
+            ],
+            "health": 58.999999999999986,
+            "reward": 5.9
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              15,
+              12
+            ],
+            "new_pos": [
+              16,
+              12
+            ],
+            "health": 58.999999999999986,
+            "reward": 5.9
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              9,
+              15
+            ],
+            "new_pos": [
+              10,
+              15
+            ],
+            "health": 60.0,
+            "reward": 59.9
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              13,
+              12
+            ],
+            "new_pos": [
+              13,
+              12
+            ],
+            "health": 58.999999999999986,
+            "reward": 5.9
+          }
+        },
+        "events": [
+          "*** [TAKIM PAYI] agent_0 takim arkadasinin buldugu yiyecekten %10 pay kazandi (+6.0 odul).",
+          "*** [TAKIM PAYI] agent_1 takim arkadasinin buldugu yiyecekten %10 pay kazandi (+6.0 odul).",
+          ">>> [YIYECEK BULUNDU] agent_2 yiyecegi tuketti! Cani 60 HP seviyesine yenilendi, +60.0 odul aldi.",
+          "*** [TAKIM PAYI] agent_3 takim arkadasinin buldugu yiyecekten %10 pay kazandi (+6.0 odul)."
+        ],
+        "active_foods": [
+          [
+            10,
+            15
+          ],
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 6,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              10,
+              1
+            ],
+            "new_pos": [
+              11,
+              1
+            ],
+            "health": 58.79999999999998,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              16,
+              12
+            ],
+            "new_pos": [
+              16,
+              11
+            ],
+            "health": 58.79999999999998,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              10,
+              15
+            ],
+            "new_pos": [
+              11,
+              15
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_LEFT",
+            "old_pos": [
+              13,
+              12
+            ],
+            "new_pos": [
+              12,
+              12
+            ],
+            "health": 58.79999999999998,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 7,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              11,
+              1
+            ],
+            "new_pos": [
+              11,
+              1
+            ],
+            "health": 58.59999999999998,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              16,
+              11
+            ],
+            "new_pos": [
+              16,
+              10
+            ],
+            "health": 58.59999999999998,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              15
+            ],
+            "new_pos": [
+              11,
+              14
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              12,
+              12
+            ],
+            "new_pos": [
+              12,
+              12
+            ],
+            "health": 58.59999999999998,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 8,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              11,
+              1
+            ],
+            "new_pos": [
+              12,
+              1
+            ],
+            "health": 58.39999999999998,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              16,
+              10
+            ],
+            "new_pos": [
+              17,
+              10
+            ],
+            "health": 58.39999999999998,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              14
+            ],
+            "new_pos": [
+              11,
+              13
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              12,
+              12
+            ],
+            "new_pos": [
+              13,
+              12
+            ],
+            "health": 58.39999999999998,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 9,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              12,
+              1
+            ],
+            "new_pos": [
+              13,
+              1
+            ],
+            "health": 58.199999999999974,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              17,
+              10
+            ],
+            "new_pos": [
+              17,
+              10
+            ],
+            "health": 58.199999999999974,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              11,
+              13
+            ],
+            "new_pos": [
+              11,
+              13
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              13,
+              12
+            ],
+            "new_pos": [
+              13,
+              12
+            ],
+            "health": 58.199999999999974,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 10,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              13,
+              1
+            ],
+            "new_pos": [
+              13,
+              1
+            ],
+            "health": 57.99999999999997,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              17,
+              10
+            ],
+            "new_pos": [
+              17,
+              9
+            ],
+            "health": 57.99999999999997,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              11,
+              13
+            ],
+            "new_pos": [
+              11,
+              13
+            ],
+            "health": 58.999999999999986,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              13,
+              12
+            ],
+            "new_pos": [
+              14,
+              12
+            ],
+            "health": 57.99999999999997,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 11,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              13,
+              1
+            ],
+            "new_pos": [
+              14,
+              1
+            ],
+            "health": 57.79999999999997,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              17,
+              9
+            ],
+            "new_pos": [
+              17,
+              8
+            ],
+            "health": 57.79999999999997,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              13
+            ],
+            "new_pos": [
+              11,
+              12
+            ],
+            "health": 58.79999999999998,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              14,
+              12
+            ],
+            "new_pos": [
+              14,
+              11
+            ],
+            "health": 57.79999999999997,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 12,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              14,
+              1
+            ],
+            "new_pos": [
+              15,
+              1
+            ],
+            "health": 57.599999999999966,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              17,
+              8
+            ],
+            "new_pos": [
+              17,
+              7
+            ],
+            "health": 57.599999999999966,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              12
+            ],
+            "new_pos": [
+              11,
+              11
+            ],
+            "health": 58.59999999999998,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              14,
+              11
+            ],
+            "new_pos": [
+              15,
+              11
+            ],
+            "health": 57.599999999999966,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 13,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              15,
+              1
+            ],
+            "new_pos": [
+              16,
+              1
+            ],
+            "health": 57.39999999999996,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              17,
+              7
+            ],
+            "new_pos": [
+              17,
+              7
+            ],
+            "health": 57.39999999999996,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              11,
+              11
+            ],
+            "new_pos": [
+              12,
+              11
+            ],
+            "health": 58.39999999999998,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              15,
+              11
+            ],
+            "new_pos": [
+              16,
+              11
+            ],
+            "health": 57.39999999999996,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 14,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              16,
+              1
+            ],
+            "new_pos": [
+              16,
+              2
+            ],
+            "health": 57.19999999999996,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              17,
+              7
+            ],
+            "new_pos": [
+              18,
+              7
+            ],
+            "health": 57.19999999999996,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              12,
+              11
+            ],
+            "new_pos": [
+              13,
+              11
+            ],
+            "health": 58.199999999999974,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              16,
+              11
+            ],
+            "new_pos": [
+              16,
+              10
+            ],
+            "health": 57.19999999999996,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 15,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              16,
+              2
+            ],
+            "new_pos": [
+              17,
+              2
+            ],
+            "health": 56.99999999999996,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              18,
+              7
+            ],
+            "new_pos": [
+              18,
+              8
+            ],
+            "health": 56.99999999999996,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              13,
+              11
+            ],
+            "new_pos": [
+              13,
+              10
+            ],
+            "health": 57.99999999999997,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              16,
+              10
+            ],
+            "new_pos": [
+              17,
+              10
+            ],
+            "health": 56.99999999999996,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 16,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              17,
+              2
+            ],
+            "new_pos": [
+              18,
+              2
+            ],
+            "health": 56.799999999999955,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              18,
+              8
+            ],
+            "new_pos": [
+              18,
+              8
+            ],
+            "health": 56.799999999999955,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              13,
+              10
+            ],
+            "new_pos": [
+              14,
+              10
+            ],
+            "health": 57.79999999999997,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              17,
+              10
+            ],
+            "new_pos": [
+              17,
+              9
+            ],
+            "health": 56.799999999999955,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 17,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              18,
+              2
+            ],
+            "new_pos": [
+              18,
+              2
+            ],
+            "health": 56.59999999999995,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              18,
+              8
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 56.59999999999995,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              14,
+              10
+            ],
+            "new_pos": [
+              14,
+              10
+            ],
+            "health": 57.599999999999966,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              17,
+              9
+            ],
+            "new_pos": [
+              18,
+              9
+            ],
+            "health": 56.59999999999995,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 18,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              18,
+              2
+            ],
+            "new_pos": [
+              19,
+              2
+            ],
+            "health": 56.39999999999995,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 56.39999999999995,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              14,
+              10
+            ],
+            "new_pos": [
+              15,
+              10
+            ],
+            "health": 57.39999999999996,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              18,
+              9
+            ],
+            "new_pos": [
+              18,
+              8
+            ],
+            "health": 56.39999999999995,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 19,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              2
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 56.199999999999946,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 56.199999999999946,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              15,
+              10
+            ],
+            "new_pos": [
+              15,
+              9
+            ],
+            "health": 57.19999999999996,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              18,
+              8
+            ],
+            "new_pos": [
+              18,
+              7
+            ],
+            "health": 56.199999999999946,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 20,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 55.99999999999994,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 55.99999999999994,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              15,
+              9
+            ],
+            "new_pos": [
+              15,
+              9
+            ],
+            "health": 56.99999999999996,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              18,
+              7
+            ],
+            "new_pos": [
+              18,
+              7
+            ],
+            "health": 55.99999999999994,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 21,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 55.79999999999994,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 55.79999999999994,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              15,
+              9
+            ],
+            "new_pos": [
+              15,
+              9
+            ],
+            "health": 56.799999999999955,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              18,
+              7
+            ],
+            "new_pos": [
+              18,
+              8
+            ],
+            "health": 55.79999999999994,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 22,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 55.59999999999994,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 55.59999999999994,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              15,
+              9
+            ],
+            "new_pos": [
+              15,
+              9
+            ],
+            "health": 56.59999999999995,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              18,
+              8
+            ],
+            "new_pos": [
+              18,
+              7
+            ],
+            "health": 55.59999999999994,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 23,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 55.399999999999935,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 55.399999999999935,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              15,
+              9
+            ],
+            "new_pos": [
+              16,
+              9
+            ],
+            "health": 56.39999999999995,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              18,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 55.399999999999935,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 24,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 55.19999999999993,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 55.19999999999993,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              16,
+              9
+            ],
+            "new_pos": [
+              17,
+              9
+            ],
+            "health": 56.199999999999946,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 55.19999999999993,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 25,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 54.99999999999993,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.99999999999993,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              17,
+              9
+            ],
+            "new_pos": [
+              17,
+              9
+            ],
+            "health": 55.99999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.99999999999993,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 26,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 54.799999999999926,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.799999999999926,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              17,
+              9
+            ],
+            "new_pos": [
+              18,
+              9
+            ],
+            "health": 55.79999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.799999999999926,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 27,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 54.59999999999992,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.59999999999992,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              18,
+              9
+            ],
+            "new_pos": [
+              18,
+              8
+            ],
+            "health": 55.59999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 54.59999999999992,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 28,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 54.39999999999992,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.39999999999992,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              18,
+              8
+            ],
+            "new_pos": [
+              18,
+              8
+            ],
+            "health": 55.399999999999935,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              5
+            ],
+            "health": 54.39999999999992,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 29,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 54.19999999999992,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.19999999999992,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              18,
+              8
+            ],
+            "new_pos": [
+              18,
+              8
+            ],
+            "health": 55.19999999999993,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              5
+            ],
+            "new_pos": [
+              19,
+              5
+            ],
+            "health": 54.19999999999992,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 30,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 53.999999999999915,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 53.999999999999915,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              18,
+              8
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 54.99999999999993,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              5
+            ],
+            "new_pos": [
+              19,
+              4
+            ],
+            "health": 53.999999999999915,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 31,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 53.79999999999991,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 53.79999999999991,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_LEFT",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              18,
+              8
+            ],
+            "health": 54.799999999999926,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              4
+            ],
+            "new_pos": [
+              19,
+              4
+            ],
+            "health": 53.79999999999991,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 32,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 53.59999999999991,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 53.59999999999991,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              18,
+              8
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 54.59999999999992,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              4
+            ],
+            "new_pos": [
+              19,
+              4
+            ],
+            "health": 53.59999999999991,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 33,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 53.399999999999906,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 53.399999999999906,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 54.39999999999992,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              4
+            ],
+            "new_pos": [
+              19,
+              4
+            ],
+            "health": 53.399999999999906,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 34,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              0
+            ],
+            "health": 53.1999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 53.1999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.19999999999992,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              4
+            ],
+            "new_pos": [
+              19,
+              4
+            ],
+            "health": 53.1999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 35,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              0
+            ],
+            "new_pos": [
+              19,
+              0
+            ],
+            "health": 52.9999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              5
+            ],
+            "health": 52.9999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 53.999999999999915,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              4
+            ],
+            "new_pos": [
+              19,
+              4
+            ],
+            "health": 52.9999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 36,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              0
+            ],
+            "new_pos": [
+              19,
+              0
+            ],
+            "health": 52.7999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              5
+            ],
+            "new_pos": [
+              19,
+              5
+            ],
+            "health": 52.7999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 53.79999999999991,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              4
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 52.7999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 37,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              0
+            ],
+            "new_pos": [
+              19,
+              0
+            ],
+            "health": 52.599999999999895,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              5
+            ],
+            "new_pos": [
+              19,
+              4
+            ],
+            "health": 52.599999999999895,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 53.59999999999991,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 52.599999999999895,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 38,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              0
+            ],
+            "new_pos": [
+              19,
+              0
+            ],
+            "health": 52.39999999999989,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              4
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 52.39999999999989,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 53.399999999999906,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              2
+            ],
+            "health": 52.39999999999989,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 39,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              0
+            ],
+            "new_pos": [
+              19,
+              0
+            ],
+            "health": 52.19999999999989,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 52.19999999999989,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 53.1999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              2
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 52.19999999999989,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      },
+      {
+        "step": 40,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              0
+            ],
+            "new_pos": [
+              19,
+              0
+            ],
+            "health": 51.999999999999886,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 51.999999999999886,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 52.9999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              1
+            ],
+            "new_pos": [
+              19,
+              1
+            ],
+            "health": 51.999999999999886,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            1,
+            16
+          ],
+          [
+            15,
+            14
+          ]
+        ]
+      }
+    ],
+    "summary": {
+      "total_steps": 40,
+      "food_events": [
+        {
+          "step": 5,
+          "agent": "agent_2",
+          "pos": [
+            10,
+            15
+          ]
+        }
+      ],
+      "death_events": [],
+      "total_rewards": {
+        "agent_0": 2.0000000000000036,
+        "agent_1": 2.0000000000000036,
+        "agent_2": 55.99999999999995,
+        "agent_3": 2.0000000000000036
+      }
+    }
+  },
+  {
+    "episode": 2,
+    "seed": 76,
+    "initial_agents": {
+      "agent_0": [
+        18,
+        15
+      ],
+      "agent_1": [
+        6,
+        9
+      ],
+      "agent_2": [
+        11,
+        19
+      ],
+      "agent_3": [
+        1,
+        8
+      ]
+    },
+    "initial_foods": [
+      [
+        2,
+        11
+      ],
+      [
+        19,
+        19
+      ],
+      [
+        12,
+        13
+      ]
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              18,
+              15
+            ],
+            "new_pos": [
+              18,
+              16
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              6,
+              9
+            ],
+            "new_pos": [
+              6,
+              10
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              19
+            ],
+            "new_pos": [
+              11,
+              18
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              1,
+              8
+            ],
+            "new_pos": [
+              1,
+              8
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 2,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              18,
+              16
+            ],
+            "new_pos": [
+              19,
+              16
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              6,
+              10
+            ],
+            "new_pos": [
+              6,
+              9
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              18
+            ],
+            "new_pos": [
+              11,
+              17
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              1,
+              8
+            ],
+            "new_pos": [
+              1,
+              8
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 3,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              16
+            ],
+            "new_pos": [
+              19,
+              16
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              6,
+              9
+            ],
+            "new_pos": [
+              6,
+              9
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              17
+            ],
+            "new_pos": [
+              11,
+              16
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              1,
+              8
+            ],
+            "new_pos": [
+              2,
+              8
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 4,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              16
+            ],
+            "new_pos": [
+              19,
+              16
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              6,
+              9
+            ],
+            "new_pos": [
+              6,
+              9
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              11,
+              16
+            ],
+            "new_pos": [
+              11,
+              16
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              2,
+              8
+            ],
+            "new_pos": [
+              3,
+              8
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 5,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              16
+            ],
+            "new_pos": [
+              19,
+              16
+            ],
+            "health": 58.999999999999986,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              6,
+              9
+            ],
+            "new_pos": [
+              6,
+              8
+            ],
+            "health": 58.999999999999986,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              11,
+              16
+            ],
+            "new_pos": [
+              11,
+              16
+            ],
+            "health": 58.999999999999986,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              3,
+              8
+            ],
+            "new_pos": [
+              4,
+              8
+            ],
+            "health": 58.999999999999986,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 6,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              16
+            ],
+            "new_pos": [
+              19,
+              16
+            ],
+            "health": 58.79999999999998,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              6,
+              8
+            ],
+            "new_pos": [
+              6,
+              8
+            ],
+            "health": 58.79999999999998,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              11,
+              16
+            ],
+            "new_pos": [
+              11,
+              16
+            ],
+            "health": 58.79999999999998,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              4,
+              8
+            ],
+            "new_pos": [
+              5,
+              8
+            ],
+            "health": 58.79999999999998,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 7,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              16
+            ],
+            "new_pos": [
+              19,
+              15
+            ],
+            "health": 58.59999999999998,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              6,
+              8
+            ],
+            "new_pos": [
+              6,
+              7
+            ],
+            "health": 58.59999999999998,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_LEFT",
+            "old_pos": [
+              11,
+              16
+            ],
+            "new_pos": [
+              10,
+              16
+            ],
+            "health": 58.59999999999998,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              5,
+              8
+            ],
+            "new_pos": [
+              5,
+              8
+            ],
+            "health": 58.59999999999998,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 8,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              15
+            ],
+            "new_pos": [
+              19,
+              14
+            ],
+            "health": 58.39999999999998,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              6,
+              7
+            ],
+            "new_pos": [
+              7,
+              7
+            ],
+            "health": 58.39999999999998,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              10,
+              16
+            ],
+            "new_pos": [
+              10,
+              16
+            ],
+            "health": 58.39999999999998,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              5,
+              8
+            ],
+            "new_pos": [
+              5,
+              7
+            ],
+            "health": 58.39999999999998,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 9,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              14
+            ],
+            "new_pos": [
+              19,
+              14
+            ],
+            "health": 58.199999999999974,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              7,
+              7
+            ],
+            "new_pos": [
+              8,
+              7
+            ],
+            "health": 58.199999999999974,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              10,
+              16
+            ],
+            "new_pos": [
+              10,
+              16
+            ],
+            "health": 58.199999999999974,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              5,
+              7
+            ],
+            "new_pos": [
+              5,
+              7
+            ],
+            "health": 58.199999999999974,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 10,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              14
+            ],
+            "new_pos": [
+              19,
+              14
+            ],
+            "health": 57.99999999999997,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              8,
+              7
+            ],
+            "new_pos": [
+              8,
+              8
+            ],
+            "health": 57.99999999999997,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              10,
+              16
+            ],
+            "new_pos": [
+              10,
+              16
+            ],
+            "health": 57.99999999999997,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              5,
+              7
+            ],
+            "new_pos": [
+              6,
+              7
+            ],
+            "health": 57.99999999999997,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 11,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              14
+            ],
+            "new_pos": [
+              19,
+              14
+            ],
+            "health": 57.79999999999997,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              8,
+              8
+            ],
+            "new_pos": [
+              8,
+              8
+            ],
+            "health": 57.79999999999997,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              10,
+              16
+            ],
+            "new_pos": [
+              10,
+              16
+            ],
+            "health": 57.79999999999997,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              6,
+              7
+            ],
+            "new_pos": [
+              6,
+              7
+            ],
+            "health": 57.79999999999997,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 12,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              14
+            ],
+            "new_pos": [
+              19,
+              13
+            ],
+            "health": 57.599999999999966,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              8,
+              8
+            ],
+            "new_pos": [
+              8,
+              7
+            ],
+            "health": 57.599999999999966,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              10,
+              16
+            ],
+            "new_pos": [
+              10,
+              15
+            ],
+            "health": 57.599999999999966,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              6,
+              7
+            ],
+            "new_pos": [
+              7,
+              7
+            ],
+            "health": 57.599999999999966,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 13,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              13
+            ],
+            "new_pos": [
+              19,
+              13
+            ],
+            "health": 57.39999999999996,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_LEFT",
+            "old_pos": [
+              8,
+              7
+            ],
+            "new_pos": [
+              7,
+              7
+            ],
+            "health": 57.39999999999996,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              10,
+              15
+            ],
+            "new_pos": [
+              11,
+              15
+            ],
+            "health": 57.39999999999996,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              7,
+              7
+            ],
+            "new_pos": [
+              7,
+              7
+            ],
+            "health": 57.39999999999996,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 14,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              13
+            ],
+            "new_pos": [
+              19,
+              12
+            ],
+            "health": 57.19999999999996,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              7,
+              7
+            ],
+            "new_pos": [
+              8,
+              7
+            ],
+            "health": 57.19999999999996,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              15
+            ],
+            "new_pos": [
+              11,
+              14
+            ],
+            "health": 57.19999999999996,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              7,
+              7
+            ],
+            "new_pos": [
+              7,
+              8
+            ],
+            "health": 57.19999999999996,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 15,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              12
+            ],
+            "new_pos": [
+              19,
+              12
+            ],
+            "health": 56.99999999999996,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_LEFT",
+            "old_pos": [
+              8,
+              7
+            ],
+            "new_pos": [
+              7,
+              7
+            ],
+            "health": 56.99999999999996,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              14
+            ],
+            "new_pos": [
+              11,
+              13
+            ],
+            "health": 56.99999999999996,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              7,
+              8
+            ],
+            "new_pos": [
+              8,
+              8
+            ],
+            "health": 56.99999999999996,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 16,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              12
+            ],
+            "new_pos": [
+              19,
+              12
+            ],
+            "health": 56.799999999999955,
+            "reward": 5.9
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              7,
+              7
+            ],
+            "new_pos": [
+              8,
+              7
+            ],
+            "health": 56.799999999999955,
+            "reward": 5.9
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              11,
+              13
+            ],
+            "new_pos": [
+              12,
+              13
+            ],
+            "health": 60.0,
+            "reward": 59.9
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              8,
+              8
+            ],
+            "new_pos": [
+              8,
+              7
+            ],
+            "health": 56.799999999999955,
+            "reward": 5.9
+          }
+        },
+        "events": [
+          "*** [TAKIM PAYI] agent_0 takim arkadasinin buldugu yiyecekten %10 pay kazandi (+6.0 odul).",
+          "*** [TAKIM PAYI] agent_1 takim arkadasinin buldugu yiyecekten %10 pay kazandi (+6.0 odul).",
+          ">>> [YIYECEK BULUNDU] agent_2 yiyecegi tuketti! Cani 60 HP seviyesine yenilendi, +60.0 odul aldi.",
+          "*** [TAKIM PAYI] agent_3 takim arkadasinin buldugu yiyecekten %10 pay kazandi (+6.0 odul)."
+        ],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ],
+          [
+            12,
+            13
+          ]
+        ]
+      },
+      {
+        "step": 17,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              12
+            ],
+            "new_pos": [
+              19,
+              11
+            ],
+            "health": 56.59999999999995,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              8,
+              7
+            ],
+            "new_pos": [
+              9,
+              7
+            ],
+            "health": 56.59999999999995,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              12,
+              13
+            ],
+            "new_pos": [
+              12,
+              12
+            ],
+            "health": 59.8,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              8,
+              7
+            ],
+            "new_pos": [
+              9,
+              7
+            ],
+            "health": 56.59999999999995,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 18,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              11
+            ],
+            "new_pos": [
+              19,
+              11
+            ],
+            "health": 56.39999999999995,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              9,
+              7
+            ],
+            "new_pos": [
+              9,
+              7
+            ],
+            "health": 56.39999999999995,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              12,
+              12
+            ],
+            "new_pos": [
+              12,
+              11
+            ],
+            "health": 59.599999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              9,
+              7
+            ],
+            "new_pos": [
+              9,
+              8
+            ],
+            "health": 56.39999999999995,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 19,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              11
+            ],
+            "new_pos": [
+              19,
+              11
+            ],
+            "health": 56.199999999999946,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              9,
+              7
+            ],
+            "new_pos": [
+              9,
+              6
+            ],
+            "health": 56.199999999999946,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              12,
+              11
+            ],
+            "new_pos": [
+              13,
+              11
+            ],
+            "health": 59.39999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              9,
+              8
+            ],
+            "new_pos": [
+              10,
+              8
+            ],
+            "health": 56.199999999999946,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 20,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              11
+            ],
+            "new_pos": [
+              19,
+              10
+            ],
+            "health": 55.99999999999994,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              9,
+              6
+            ],
+            "new_pos": [
+              10,
+              6
+            ],
+            "health": 55.99999999999994,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              13,
+              11
+            ],
+            "new_pos": [
+              13,
+              10
+            ],
+            "health": 59.19999999999999,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              10,
+              8
+            ],
+            "new_pos": [
+              11,
+              8
+            ],
+            "health": 55.99999999999994,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 21,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              10
+            ],
+            "new_pos": [
+              19,
+              10
+            ],
+            "health": 55.79999999999994,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "STAY",
+            "old_pos": [
+              10,
+              6
+            ],
+            "new_pos": [
+              10,
+              6
+            ],
+            "health": 55.79999999999994,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              13,
+              10
+            ],
+            "new_pos": [
+              14,
+              10
+            ],
+            "health": 58.999999999999986,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              11,
+              8
+            ],
+            "new_pos": [
+              11,
+              8
+            ],
+            "health": 55.79999999999994,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 22,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              10
+            ],
+            "new_pos": [
+              19,
+              9
+            ],
+            "health": 55.59999999999994,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              10,
+              6
+            ],
+            "new_pos": [
+              11,
+              6
+            ],
+            "health": 55.59999999999994,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              14,
+              10
+            ],
+            "new_pos": [
+              14,
+              9
+            ],
+            "health": 58.79999999999998,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              8
+            ],
+            "new_pos": [
+              11,
+              7
+            ],
+            "health": 55.59999999999994,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 23,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              9
+            ],
+            "new_pos": [
+              19,
+              9
+            ],
+            "health": 55.399999999999935,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              6
+            ],
+            "new_pos": [
+              11,
+              5
+            ],
+            "health": 55.399999999999935,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              14,
+              9
+            ],
+            "new_pos": [
+              14,
+              8
+            ],
+            "health": 58.59999999999998,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              7
+            ],
+            "new_pos": [
+              11,
+              6
+            ],
+            "health": 55.399999999999935,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 24,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              9
+            ],
+            "new_pos": [
+              19,
+              8
+            ],
+            "health": 55.19999999999993,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              11,
+              5
+            ],
+            "new_pos": [
+              11,
+              4
+            ],
+            "health": 55.19999999999993,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              14,
+              8
+            ],
+            "new_pos": [
+              14,
+              8
+            ],
+            "health": 58.39999999999998,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              11,
+              6
+            ],
+            "new_pos": [
+              11,
+              6
+            ],
+            "health": 55.19999999999993,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 25,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              8
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.99999999999993,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              11,
+              4
+            ],
+            "new_pos": [
+              12,
+              4
+            ],
+            "health": 54.99999999999993,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              14,
+              8
+            ],
+            "new_pos": [
+              14,
+              7
+            ],
+            "health": 58.199999999999974,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              11,
+              6
+            ],
+            "new_pos": [
+              12,
+              6
+            ],
+            "health": 54.99999999999993,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 26,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.799999999999926,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              12,
+              4
+            ],
+            "new_pos": [
+              13,
+              4
+            ],
+            "health": 54.799999999999926,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              14,
+              7
+            ],
+            "new_pos": [
+              14,
+              6
+            ],
+            "health": 57.99999999999997,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              12,
+              6
+            ],
+            "new_pos": [
+              13,
+              6
+            ],
+            "health": 54.799999999999926,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 27,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.59999999999992,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              13,
+              4
+            ],
+            "new_pos": [
+              14,
+              4
+            ],
+            "health": 54.59999999999992,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              14,
+              6
+            ],
+            "new_pos": [
+              15,
+              6
+            ],
+            "health": 57.79999999999997,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              13,
+              6
+            ],
+            "new_pos": [
+              13,
+              6
+            ],
+            "health": 54.59999999999992,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 28,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.39999999999992,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              14,
+              4
+            ],
+            "new_pos": [
+              15,
+              4
+            ],
+            "health": 54.39999999999992,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              15,
+              6
+            ],
+            "new_pos": [
+              15,
+              6
+            ],
+            "health": 57.599999999999966,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              13,
+              6
+            ],
+            "new_pos": [
+              13,
+              6
+            ],
+            "health": 54.39999999999992,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 29,
+        "agents": {
+          "agent_0": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 54.19999999999992,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              15,
+              4
+            ],
+            "new_pos": [
+              16,
+              4
+            ],
+            "health": 54.19999999999992,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              15,
+              6
+            ],
+            "new_pos": [
+              16,
+              6
+            ],
+            "health": 57.39999999999996,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              13,
+              6
+            ],
+            "new_pos": [
+              13,
+              6
+            ],
+            "health": 54.19999999999992,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 30,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 53.999999999999915,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              16,
+              4
+            ],
+            "new_pos": [
+              17,
+              4
+            ],
+            "health": 53.999999999999915,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              16,
+              6
+            ],
+            "new_pos": [
+              17,
+              6
+            ],
+            "health": 57.19999999999996,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              13,
+              6
+            ],
+            "new_pos": [
+              13,
+              6
+            ],
+            "health": 53.999999999999915,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 31,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 53.79999999999991,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              17,
+              4
+            ],
+            "new_pos": [
+              17,
+              3
+            ],
+            "health": 53.79999999999991,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              17,
+              6
+            ],
+            "new_pos": [
+              17,
+              6
+            ],
+            "health": 56.99999999999996,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              13,
+              6
+            ],
+            "new_pos": [
+              13,
+              6
+            ],
+            "health": 53.79999999999991,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 32,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 53.59999999999991,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              17,
+              3
+            ],
+            "new_pos": [
+              18,
+              3
+            ],
+            "health": 53.59999999999991,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              17,
+              6
+            ],
+            "new_pos": [
+              18,
+              6
+            ],
+            "health": 56.799999999999955,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              13,
+              6
+            ],
+            "new_pos": [
+              14,
+              6
+            ],
+            "health": 53.59999999999991,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 33,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 53.399999999999906,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              18,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 53.399999999999906,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              18,
+              6
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 56.59999999999995,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              14,
+              6
+            ],
+            "new_pos": [
+              14,
+              5
+            ],
+            "health": 53.399999999999906,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 34,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 53.1999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 53.1999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 56.39999999999995,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              14,
+              5
+            ],
+            "new_pos": [
+              15,
+              5
+            ],
+            "health": 53.1999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 35,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 52.9999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 52.9999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 56.199999999999946,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              15,
+              5
+            ],
+            "new_pos": [
+              16,
+              5
+            ],
+            "health": 52.9999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 36,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_DOWN",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 52.7999999999999,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 52.7999999999999,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              6
+            ],
+            "health": 55.99999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              16,
+              5
+            ],
+            "new_pos": [
+              17,
+              5
+            ],
+            "health": 52.7999999999999,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 37,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 52.599999999999895,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 52.599999999999895,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              6
+            ],
+            "new_pos": [
+              19,
+              5
+            ],
+            "health": 55.79999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              17,
+              5
+            ],
+            "new_pos": [
+              18,
+              5
+            ],
+            "health": 52.599999999999895,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 38,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 52.39999999999989,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 52.39999999999989,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              5
+            ],
+            "new_pos": [
+              19,
+              5
+            ],
+            "health": 55.59999999999994,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              18,
+              5
+            ],
+            "new_pos": [
+              18,
+              5
+            ],
+            "health": 52.39999999999989,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 39,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 52.19999999999989,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 52.19999999999989,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "STAY",
+            "old_pos": [
+              19,
+              5
+            ],
+            "new_pos": [
+              19,
+              5
+            ],
+            "health": 55.399999999999935,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              18,
+              5
+            ],
+            "new_pos": [
+              18,
+              4
+            ],
+            "health": 52.19999999999989,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      },
+      {
+        "step": 40,
+        "agents": {
+          "agent_0": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              7
+            ],
+            "new_pos": [
+              19,
+              7
+            ],
+            "health": 51.999999999999886,
+            "reward": -0.1
+          },
+          "agent_1": {
+            "action": "MOVE_RIGHT",
+            "old_pos": [
+              19,
+              3
+            ],
+            "new_pos": [
+              19,
+              3
+            ],
+            "health": 51.999999999999886,
+            "reward": -0.1
+          },
+          "agent_2": {
+            "action": "MOVE_UP",
+            "old_pos": [
+              19,
+              5
+            ],
+            "new_pos": [
+              19,
+              4
+            ],
+            "health": 55.19999999999993,
+            "reward": -0.1
+          },
+          "agent_3": {
+            "action": "STAY",
+            "old_pos": [
+              18,
+              4
+            ],
+            "new_pos": [
+              18,
+              4
+            ],
+            "health": 51.999999999999886,
+            "reward": -0.1
+          }
+        },
+        "events": [],
+        "active_foods": [
+          [
+            2,
+            11
+          ],
+          [
+            19,
+            19
+          ]
+        ]
+      }
+    ],
+    "summary": {
+      "total_steps": 40,
+      "food_events": [
+        {
+          "step": 16,
+          "agent": "agent_2",
+          "pos": [
+            12,
+            13
+          ]
+        }
+      ],
+      "death_events": [],
+      "total_rewards": {
+        "agent_0": 2.0,
+        "agent_1": 2.0,
+        "agent_2": 55.999999999999964,
+        "agent_3": 2.0
+      }
+    }
+  }
+]
