@@ -4,7 +4,7 @@ CONFIG = {
     "GRID_SIZE": 20,
     "NUM_AGENTS": 4,
     "NUM_REWARDS": 3,
-    "MAX_HEALTH": 30.0,
+    "MAX_HEALTH": 60.0,
     "HEALTH_DECAY_PER_STEP": 0.2,       # Lowered from 1.0 -> Gives ~150 steps survival without food
     "WRITE_HEALTH_DECAY": 0.0,          # Zero health loss when writing to map (free marking per supervisor feedback)
     "REWARD_RESPAWN_STEPS": 60,         # Resource recharge period
