@@ -64,7 +64,7 @@ def train_evolution(
     print("=" * 65)
 
     env = MARLSurvivalEnv(config=CONFIG, max_steps=max_steps_per_episode)
-    template_model = ActorCritic(obs_dim=21, action_dim=5, hidden_dim=128)
+    template_model = ActorCritic(obs_dim=30, action_dim=6, hidden_dim=128)
     base_weights = template_model.get_flat_weights()
     num_params = len(base_weights)
 

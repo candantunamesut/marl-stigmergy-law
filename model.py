@@ -7,11 +7,12 @@ import numpy as np
 
 class ActorCritic(nn.Module):
     """
-    Multi-Agent Actor-Critic Network for MARL Survival & Collective Exploration.
-    Shares parameters across homogeneous agents to maximize sample efficiency.
+    Multi-Agent Actor-Critic Network for MARL Survival & Stigmergic Cooperation.
+    Supports 6 discrete actions (UP, DOWN, LEFT, RIGHT, STAY, WRITE_TO_MAP)
+    and 30 continuous observation dimensions across both 'local' and 'full' visibility modes.
     Includes flat-weight interface for neuroevolution / genetic optimization.
     """
-    def __init__(self, obs_dim: int = 21, action_dim: int = 5, hidden_dim: int = 128):
+    def __init__(self, obs_dim: int = 30, action_dim: int = 6, hidden_dim: int = 128):
         super().__init__()
         self.obs_dim = obs_dim
         self.action_dim = action_dim
@@ -26,7 +27,7 @@ class ActorCritic(nn.Module):
             nn.Tanh(),
         )
 
-        # Actor (Policy) Head -> Action Logits (5 movement actions)
+        # Actor (Policy) Head -> Action Logits (6 actions)
         self.actor_head = nn.Linear(hidden_dim, action_dim)
 
         # Critic (Value) Head -> State Value V(s)

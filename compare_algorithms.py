@@ -76,7 +76,7 @@ def run_comparison(num_episodes: int = 10, max_steps: int = 120):
     rand_res = evaluate_policy(env, policy_type="random", num_episodes=num_episodes, max_steps=max_steps)
 
     # 2. PPO
-    ppo_model = ActorCritic(obs_dim=21, action_dim=5, hidden_dim=128)
+    ppo_model = ActorCritic(obs_dim=30, action_dim=6, hidden_dim=128)
     if os.path.exists(PPO_MODEL_PATH):
         try:
             ppo_model.load_state_dict(torch.load(PPO_MODEL_PATH, map_location="cpu"))
@@ -88,7 +88,7 @@ def run_comparison(num_episodes: int = 10, max_steps: int = 120):
         ppo_res = rand_res
 
     # 3. Evolution
-    evo_model = ActorCritic(obs_dim=21, action_dim=5, hidden_dim=128)
+    evo_model = ActorCritic(obs_dim=30, action_dim=6, hidden_dim=128)
     if os.path.exists(EVO_MODEL_PATH):
         try:
             evo_model.load_state_dict(torch.load(EVO_MODEL_PATH, map_location="cpu"))

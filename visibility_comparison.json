@@ -1,0 +1,20 @@
+{
+  "Full-Map Visibility (Upper Bound)": {
+    "mean_steps": 150.0,
+    "std_steps": 0.0,
+    "mean_food": 0.7,
+    "std_food": 0.9,
+    "mean_writes": 129.9,
+    "std_writes": 88.32491154821498,
+    "mean_reward": 1.3649999999999998
+  },
+  "Local Vision + Stigmergy Map": {
+    "mean_steps": 150.0,
+    "std_steps": 0.0,
+    "mean_food": 46.7,
+    "std_food": 42.78329113100113,
+    "mean_writes": 21.8,
+    "std_writes": 25.158696309626222,
+    "mean_reward": 33.916999999999994
+  }
+}

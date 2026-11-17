@@ -399,25 +399,45 @@ def generate_html_playback(frames_data: list, output_path: str = DEFAULT_HTML_PA
 """
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html_content)
+    abs_url = "file://" + os.path.abspath(output_path)
     print(f"\n[OK] Interactive HTML Simulation visualizer exported to: {output_path}")
+    print(f"     Opening in browser: {abs_url}")
+    try:
+        import webbrowser
+        webbrowser.open(abs_url)
+    except Exception:
+        pass
 
 
-def visualize_episode(model_path: str = DEFAULT_MODEL_PATH, max_steps: int = 80, seed: int = 42, export_html: bool = True):
+def visualize_episode(model_path: str = None, max_steps: int = 80, seed: int = 42, export_html: bool = True, visibility_mode: str = "local"):
     print("=" * 65)
-    print("RUNNING VISUAL SIMULATION OF UPDATED MARL SURVIVAL AGENTS")
+    print(f"RUNNING VISUAL SIMULATION OF MARL STIGMERGY AGENTS ({visibility_mode.upper()} VISIBILITY)")
     print("=" * 65)
 
-    env = MARLSurvivalEnv(config=CONFIG, max_steps=max_steps)
-    model = ActorCritic(obs_dim=21, action_dim=5, hidden_dim=128)
+    cfg = CONFIG.copy()
+    cfg["VISIBILITY_MODE"] = visibility_mode
+    env = MARLSurvivalEnv(config=cfg, max_steps=max_steps)
+    model = ActorCritic(obs_dim=30, action_dim=6, hidden_dim=128)
 
-    if os.path.exists(model_path):
+    if model_path is None:
+        cand_paths = [
+            os.path.join(BASE_DIR, f"marl_survival_model_{visibility_mode}.pt"),
+            os.path.join(BASE_DIR, "marl_survival_model.pt"),
+            os.path.join(BASE_DIR, "evolution_best_model.pt"),
+        ]
+        for p in cand_paths:
+            if os.path.exists(p):
+                model_path = p
+                break
+
+    if model_path and os.path.exists(model_path):
         try:
             model.load_state_dict(torch.load(model_path, map_location="cpu"))
             print(f"Loaded trained policy weights from {model_path}")
         except Exception as e:
             print(f"Notice: Could not load trained weights ({e}). Running baseline policy.")
     else:
-        print(f"Notice: Model file {model_path} not found. Running with random/untrained policy.")
+        print(f"Notice: No checkpoint found. Running with random/untrained policy.")
     model.eval()
 
     obs_dict, _ = env.reset(seed=seed)
@@ -463,8 +483,18 @@ def visualize_episode(model_path: str = DEFAULT_MODEL_PATH, max_steps: int = 80,
         print(f"\n--- STEP {step} ---")
         grid = [["." for _ in range(env.grid_size)] for _ in range(env.grid_size)]
 
+        # Place pheromone marks (~ for faint, * for strong)
+        for y in range(env.grid_size):
+            for x in range(env.grid_size):
+                val = env.shared_map[y, x]
+                if val > 0.5:
+                    grid[y][x] = "*"
+                elif val > 0.1:
+                    grid[y][x] = "~"
+
+        # Place food pools
         for r in env.rewards_data:
-            if r["active"]:
+            if r["amount"] > 0:
                 rx, ry = r["pos"]
                 grid[ry][rx] = "F"
 
@@ -478,25 +508,32 @@ def visualize_episode(model_path: str = DEFAULT_MODEL_PATH, max_steps: int = 80,
 
         hp_str = ", ".join([f"{a}: {env.agent_healths[a]:.1f}HP" for a in env.agents])
         act_str = ", ".join([f"{a}: {ACTION_NAMES[actions[a]]}" for a in env.agents])
+        pool_str = ", ".join([f"P{i}:{r['amount']:.1f}/{r['capacity']:.0f}" for i, r in enumerate(env.rewards_data)])
         print(f"Healths: [{hp_str}]")
         print(f"Actions: [{act_str}]")
+        print(f"Pools:   [{pool_str}] | Marked Cells: {np.count_nonzero(env.shared_map > 0.05)}")
 
         step_events = []
         obs_dict, rewards, terminations, truncations, infos = env.step(actions)
 
         for agent, r in rewards.items():
+            if infos.get(agent, {}).get("wrote_to_map"):
+                ev = f"*** {agent} HARITAYA FEROMON IZI BIRAKTI (Stigmergy Mark)!"
+                print(f"  {ev}")
+                step_events.append(ev)
             if infos.get(agent, {}).get("food_found"):
-                ev = f">>> {agent} YEMEK YEDI (+60 HP & +60 Odul)!"
+                consumed = infos[agent].get("food_consumed", 0.0)
+                ev = f">>> {agent} YEMEK YEDI (+{consumed:.1f} birim beslendi)!"
                 print(f"  {ev}")
-                step_events.append(f">>> {agent} YEMEK YEDİ (+60 HP & +60 Ödül)!")
+                step_events.append(ev)
             if "shared_food_reward" in infos.get(agent, {}):
-                ev = f">>> {agent} takim arkadasi yemeginden pay aldi (+{infos[agent]['shared_food_reward']:.1f} Odul)!"
+                ev = f">>> {agent} takim arkadasi yemeginden pay aldi (+{infos[agent]['shared_food_reward']:.2f} Odul)!"
                 print(f"  {ev}")
-                step_events.append(f">>> {agent} takım arkadaşı yemeğinden pay aldı (+{infos[agent]['shared_food_reward']:.1f} Ödül)!")
+                step_events.append(ev)
             if infos.get(agent, {}).get("dead"):
                 ev = f"!!! {agent} OLDU (-100 Odul). Diger tum ajanlar -10 HP kaybetti!"
                 print(f"  {ev}")
-                step_events.append(f"!!! {agent} ÖLDÜ (-100 Ödül). Diğer tüm ajanlar -10 HP kaybetti!")
+                step_events.append(ev)
 
         # Record frame for HTML player
         agents_frame = []
@@ -529,7 +566,8 @@ def visualize_episode(model_path: str = DEFAULT_MODEL_PATH, max_steps: int = 80,
 def main():
     parser = argparse.ArgumentParser(description="Visualize MARL Survival Agents")
     parser.add_argument("--steps", type=int, default=80, help="Maximum number of simulation steps to run")
-    parser.add_argument("--model", type=str, default=DEFAULT_MODEL_PATH, help="Path to trained model checkpoint")
+    parser.add_argument("--model", type=str, default=None, help="Path to trained model checkpoint")
+    parser.add_argument("--visibility", type=str, default="local", choices=["local", "full"], help="Visibility configuration: 'local' or 'full'")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for environment")
     parser.add_argument("--no-html", action="store_true", help="Disable HTML playback export")
     args = parser.parse_args()
@@ -539,6 +577,7 @@ def main():
         max_steps=args.steps,
         seed=args.seed,
         export_html=not args.no_html,
+        visibility_mode=args.visibility,
     )
 
 
