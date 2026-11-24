@@ -3,6 +3,11 @@
 **Authors:** Candan Tuna Mesut & Kayra Sevim  
 **Supervisor:** Dr. Zeki Doruk Erden  
 
+> 🚀 **QUICK DEMO NOTEBOOK FOR SUPERVISOR & CLAUDE / AGENTS:**  
+> To inspect and run the finalized Phase 1 (External Memory / Stigmergy) simulation results without navigating outdated legacy files, open:  
+> **👉 [`demo_external_memory.ipynb`](./demo_external_memory.ipynb)**  
+> This self-contained notebook loads the trained checkpoint (`marl_survival_model_local.pt`), executes the 6-action environment with replenishing pools and pheromone stigmergy, visualizes the spatial maps, and reproduces the empirical benchmark table.
+
 ---
 
 ## 📌 Executive Summary
